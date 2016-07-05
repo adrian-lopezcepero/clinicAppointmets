@@ -14,7 +14,7 @@ import dagger.Provides;
 
 @Module
 public class DomainModule {
-    public static String FIREBASE_URL = "";
+    public static String FIREBASE_URL = "https://clinic-appointments.firebaseio.com";
 
     @Provides
     @Singleton
