@@ -11,7 +11,7 @@ public interface LoginView {
 
     void enableInputs();
 
-    void hideInputs();
+    void disableInputs();
 
     void handleSignUp();
 
