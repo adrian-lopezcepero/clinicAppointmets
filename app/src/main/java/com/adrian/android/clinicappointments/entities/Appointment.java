@@ -1,5 +1,7 @@
 package com.adrian.android.clinicappointments.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -7,6 +9,9 @@ import java.util.Date;
  */
 public class Appointment {
     public final static boolean CLINICAPPOINTMENT = true;
+    @JsonIgnore
+    private String id;
+
     private Date initDate;
     private Date endDate;
     private String patient;
@@ -14,16 +19,13 @@ public class Appointment {
     private Double latitude;
     private boolean isClinicappointment;
 
-    public Appointment(Date initDate, Date endDate, String patient, Double longitude, Double
-            latitude, boolean isClinicappointment) {
-        this.initDate = initDate;
-        this.endDate = endDate;
-        this.patient = patient;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.isClinicappointment = isClinicappointment;
+    public String getId() {
+        return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public boolean isClinicappointment() {
         return isClinicappointment;
