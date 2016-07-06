@@ -26,12 +26,21 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     @Override
     public void onCreate() {
-        eventBus.register(this);
     }
 
     @Override
     public void onDestroy() {
         this.loginView = null;
+    }
+
+
+    @Override
+    public void onResume() {
+        eventBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
         eventBus.unregister(this);
     }
 
@@ -55,6 +64,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
         }
     }
+
 
     private void onSignUpSuccess() {
         if (loginView != null) {

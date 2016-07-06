@@ -2,11 +2,12 @@
     <string name="app_name">Clinic Appointments</string>
     <string name="login.message.email">Email</string>
     <string name="login.message.password">Password</string>
-    <string name="login.message.signin">Go to Sign In</string>
-    <string name="login.error.message.signin">Can't perform login %s</string>
+    <string name="login.message.signin">Sign In</string>
+    <string name="login.message.signup">Go to Sign Un</string>
+    <string name="login.error.message.signin">Cant perform login %s</string>
 
     <string name="signup.title">Create new account</string>
     <string name="signup.notice.message.useradded">User created without errors</string>
-    <string name="signup.error.message.signup">Can't register new user %s</string>
+    <string name="signup.error.message.signup">Cant register new user %s</string>
     <string name="signup.message.signup">Create account</string>
 </resources>

@@ -1,6 +1,10 @@
 package com.adrian.android.clinicappointments.domain.di;
 
+import android.content.Context;
+import android.location.Geocoder;
+
 import com.adrian.android.clinicappointments.domain.FirebaseAPI;
+import com.adrian.android.clinicappointments.domain.Util;
 import com.firebase.client.Firebase;
 
 import javax.inject.Singleton;
@@ -22,5 +26,22 @@ public class DomainModule {
         return new FirebaseAPI(firebase);
     }
 
+    @Provides
+    @Singleton
+    Firebase providesFirebase() {
+        return new Firebase(FIREBASE_URL);
+    }
+
+    @Provides
+    @Singleton
+    Util providesUtil(Geocoder geocoder) {
+        return new Util(geocoder);
+    }
+
+    @Provides
+    @Singleton
+    Geocoder providesGeocoder(Context context) {
+        return new Geocoder(context);
+    }
 
 }

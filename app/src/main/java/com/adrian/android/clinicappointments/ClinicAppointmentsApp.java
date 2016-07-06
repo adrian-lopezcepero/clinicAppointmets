@@ -4,7 +4,9 @@ import android.app.Application;
 
 import com.adrian.android.clinicappointments.domain.di.DomainModule;
 import com.adrian.android.clinicappointments.libs.di.LibsModule;
+import com.adrian.android.clinicappointments.login.di.DaggerLoginComponent;
 import com.adrian.android.clinicappointments.login.di.LoginComponent;
+import com.adrian.android.clinicappointments.login.di.LoginModule;
 import com.adrian.android.clinicappointments.login.ui.LoginView;
 import com.firebase.client.Firebase;
 
@@ -35,14 +37,13 @@ public class ClinicAppointmentsApp extends Application {
     }
 
     public LoginComponent getLoginComponent(LoginView view) {
-        return null;
-//        return DaggerLoginComponent
-//                .builder()
-//                .ClinicAppointmentsAppModule(ClinicAppointmentsAppModule)
-//                .domainModule(domainModule)
-//                .libsModule(libsModule)
-//                .loginModule(new LoginModule(view))
-//                .build();
+        return DaggerLoginComponent
+                .builder()
+                .clinicAppointmentsAppModule(clinicAppointmentsAppModule)
+                .domainModule(domainModule)
+                .libsModule(libsModule)
+                .loginModule(new LoginModule(view))
+                .build();
 
     }
 }

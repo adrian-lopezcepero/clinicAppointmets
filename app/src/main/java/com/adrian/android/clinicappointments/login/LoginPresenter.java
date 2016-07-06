@@ -10,6 +10,10 @@ public interface LoginPresenter {
 
     void onDestroy();
 
+    void onResume();
+
+    void onPause();
+
     void onEventMainThread(LoginEvent event);
 
     void login(String email, String password);

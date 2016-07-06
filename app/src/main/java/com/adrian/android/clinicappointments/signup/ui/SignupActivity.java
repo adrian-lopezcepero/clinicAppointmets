@@ -1,5 +1,6 @@
 package com.adrian.android.clinicappointments.signup.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.adrian.android.clinicappointments.ClinicAppointmentsApp;
 import com.adrian.android.clinicappointments.R;
+import com.adrian.android.clinicappointments.appointments.ui.AppointmentsActivity;
 import com.adrian.android.clinicappointments.login.LoginPresenter;
 import com.adrian.android.clinicappointments.login.ui.LoginView;
 
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SignupActivity extends AppCompatActivity implements LoginView {
 
@@ -64,14 +67,14 @@ public class SignupActivity extends AppCompatActivity implements LoginView {
 
     @Override
     protected void onPause() {
+        presenter.onPause();
         super.onPause();
-        presenter.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        presenter.onResume();
         super.onResume();
-        presenter.onCreate();
     }
 
     @Override
@@ -95,8 +98,10 @@ public class SignupActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
+    @OnClick(R.id.btnSignup)
     public void handleSignUp() {
-
+        presenter.registerNewUser(editTxtEmail.getText().toString(),
+                editTxtPassword.getText().toString());
     }
 
     @Override
@@ -113,6 +118,9 @@ public class SignupActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void navigateToAppointmentsScreen() {
+        Intent intent = new Intent(this, AppointmentsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

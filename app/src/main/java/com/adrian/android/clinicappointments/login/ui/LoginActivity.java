@@ -14,6 +14,7 @@ import com.adrian.android.clinicappointments.ClinicAppointmentsApp;
 import com.adrian.android.clinicappointments.R;
 import com.adrian.android.clinicappointments.appointments.ui.AppointmentsActivity;
 import com.adrian.android.clinicappointments.login.LoginPresenter;
+import com.adrian.android.clinicappointments.signup.ui.SignupActivity;
 
 import javax.inject.Inject;
 
@@ -60,14 +61,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     protected void onPause() {
+        presenter.onPause();
         super.onPause();
-        presenter.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        presenter.onResume();
         super.onResume();
-        presenter.onCreate();
 //        Try to perform login because we can have a previous login
         presenter.login(null, null);
     }
@@ -100,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     @OnClick(R.id.btnSignup)
     public void handleSignUp() {
-
+        startActivity(new Intent(this, SignupActivity.class));
     }
 
     @Override
@@ -116,7 +117,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void navigateToAppointmentsScreen() {
-        startActivity(new Intent(this, AppointmentsActivity.class));
+        Intent intent = new Intent(this, AppointmentsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
