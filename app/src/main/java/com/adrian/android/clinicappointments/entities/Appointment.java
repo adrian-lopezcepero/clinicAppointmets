@@ -14,7 +14,7 @@ public class Appointment {
 
     private Date initDate;
     private Date endDate;
-    private String patient;
+    private Patient patient;
     private Double longitude;
     private Double latitude;
     private boolean isClinicappointment;
@@ -51,11 +51,11 @@ public class Appointment {
         this.endDate = endDate;
     }
 
-    public String getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
-    public void setPatient(String patient) {
+    public void setPatient(Patient patient) {
         this.patient = patient;
     }
 

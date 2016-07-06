@@ -10,4 +10,7 @@
     <string name="signup.notice.message.useradded">User created without errors</string>
     <string name="signup.error.message.signup">Cant register new user %s</string>
     <string name="signup.message.signup">Create account</string>
+
+    <string name="appointments.title">Appointments</string>
+    <string name="appointments.menu.action.signoff">Log out</string>
 </resources>

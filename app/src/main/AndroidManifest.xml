@@ -32,7 +32,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".login.ui.LoginActivity"/>
         </activity>
-        <activity android:name=".appointments.ui.AppointmentsActivity">
+        <activity
+            android:name=".appointments.ui.AppointmentsActivity"
+            android:label="Appointments"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
