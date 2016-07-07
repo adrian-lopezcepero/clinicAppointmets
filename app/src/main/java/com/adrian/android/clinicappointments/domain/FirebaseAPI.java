@@ -18,6 +18,7 @@ import java.util.Map;
  * Firebase and the app.
  */
 public class FirebaseAPI {
+    public final static String APPOINTMETNS_PATH = "appointments";
     private Firebase firebase;
     private ChildEventListener appointmentEventListener;
 
@@ -26,7 +27,7 @@ public class FirebaseAPI {
     }
 
     /**
-     * Check if there is new appointments in Firebase.
+     * Check if Firebase return an Appointment at Least.
      *
      * @param listener Interface to wrap the events of Firebase.
      */
@@ -88,7 +89,7 @@ public class FirebaseAPI {
     /**
      * Revome the appointmentEventListener from for the Firebase object.
      */
-    public void unsibscribe() {
+    public void unsubscribe() {
         firebase.removeEventListener(appointmentEventListener);
     }
 
@@ -195,6 +196,22 @@ public class FirebaseAPI {
             listener.onError(null);
     }
 
+    public Firebase getOneAppointmentReference(String appointmentId) {
+        Firebase appointmentReference = null;
+        if (appointmentId != null) {
+            appointmentReference = firebase.getRoot().child(APPOINTMETNS_PATH).child(appointmentId);
+        }
+        return appointmentReference;
+    }
+
+    public Firebase getAppointmentsReference(String appointmentId) {
+        Firebase appointmentReference = null;
+        if (appointmentId != null) {
+            appointmentReference = firebase.getRoot().child(APPOINTMETNS_PATH);
+        }
+        return appointmentReference;
+    }
+
     /**
      * Perform logout on Firebase.
      */
@@ -202,4 +219,7 @@ public class FirebaseAPI {
         firebase.unauth();
     }
 
+    public void destroyListener() {
+        firebase.removeEventListener(appointmentEventListener);
+    }
 }

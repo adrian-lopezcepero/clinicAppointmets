@@ -13,4 +13,6 @@
 
     <string name="appointments.title">Appointments</string>
     <string name="appointments.menu.action.signoff">Log out</string>
+    <string name="appointments.error.message">Error: %s</string>
+    <string name="main.menu.action.logout">Log out</string>
 </resources>

@@ -11,4 +11,14 @@ public interface AppointmentsView {
     void onAppointmentRemoved(Appointment appointment);
 
     void onAppointmentChanged(Appointment appointment);
+
+    void hideList();
+
+    void showProgress();
+
+    void showList();
+
+    void hideProgress();
+
+    void onAppointmentError(String error);
 }

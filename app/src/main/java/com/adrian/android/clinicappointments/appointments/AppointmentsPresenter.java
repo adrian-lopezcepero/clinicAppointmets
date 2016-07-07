@@ -6,7 +6,7 @@ import com.adrian.android.clinicappointments.entities.Appointment;
 /**
  * Created by adrian on 6/07/16.
  */
-public interface AppointmentPresenter {
+public interface AppointmentsPresenter {
     void onPause();
 
     void onResume();
@@ -14,6 +14,10 @@ public interface AppointmentPresenter {
     void onCreate();
 
     void onDestroy();
+
+    void subscribe();
+
+    void unsubscribe();
 
     void onEventMainThread(AppointmentEvent event);
 

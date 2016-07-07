@@ -1,5 +1,7 @@
 package com.adrian.android.clinicappointments.appointments;
 
+import com.adrian.android.clinicappointments.entities.Appointment;
+
 /**
  * Created by adrian on 6/07/16.
  */
@@ -8,7 +10,7 @@ public interface AppointmentsRepository {
 
     String getCurrentUserEmail();
 
-    void removeAppointment(int AppointmentId);
+    void removeAppointment(Appointment appointment);
 
     void subscribeToAppointmentsEvents();
 

@@ -44,6 +44,14 @@ public class LoginPresenterImpl implements LoginPresenter {
         eventBus.unregister(this);
     }
 
+
+    private void onFailedToRecoverSession() {
+        if (loginView != null) {
+            loginView.hideProgress();
+            loginView.enableInputs();
+        }
+    }
+
     @Override
     @Subscribe
     public void onEventMainThread(LoginEvent event) {
@@ -60,6 +68,9 @@ public class LoginPresenterImpl implements LoginPresenter {
                     break;
                 case LoginEvent.ONSIGNUP_SUCCESS:
                     onSignUpSuccess();
+                    break;
+                case LoginEvent.ONFAILED_TO_RECOVER_SESSION:
+                    onFailedToRecoverSession();
                     break;
             }
         }

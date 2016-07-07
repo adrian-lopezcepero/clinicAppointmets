@@ -2,6 +2,11 @@ package com.adrian.android.clinicappointments;
 
 import android.app.Application;
 
+import com.adrian.android.clinicappointments.appointments.di.AppointmentsComponet;
+import com.adrian.android.clinicappointments.appointments.di.AppointmentsModule;
+import com.adrian.android.clinicappointments.appointments.di.DaggerAppointmentsComponet;
+import com.adrian.android.clinicappointments.appointments.ui.AppointmentsView;
+import com.adrian.android.clinicappointments.appointments.ui.adapters.OnItemClickListener;
 import com.adrian.android.clinicappointments.domain.di.DomainModule;
 import com.adrian.android.clinicappointments.libs.di.LibsModule;
 import com.adrian.android.clinicappointments.login.di.DaggerLoginComponent;
@@ -43,6 +48,19 @@ public class ClinicAppointmentsApp extends Application {
                 .domainModule(domainModule)
                 .libsModule(libsModule)
                 .loginModule(new LoginModule(view))
+                .build();
+
+    }
+
+    public AppointmentsComponet getAppointmentComponent(AppointmentsView view,
+                                                        OnItemClickListener onItemClickListener) {
+//        return null;
+        return DaggerAppointmentsComponet
+                .builder()
+                .clinicAppointmentsAppModule(clinicAppointmentsAppModule)
+                .domainModule(domainModule)
+                .libsModule(libsModule)
+                .appointmentsModule(new AppointmentsModule(view, onItemClickListener))
                 .build();
 
     }
