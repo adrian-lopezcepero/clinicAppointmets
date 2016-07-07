@@ -38,7 +38,7 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
 
     @Override
     public void onCreate() {
-        eventBus.register(this);
+        appointmentsInteractor.subscribe();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
                         view.onAppointmentChanged(event.getAppointment());
                         break;
                     case AppointmentEvent.ONAPPOINTMENT_REMOVED:
-                        view.onAppointmentAdded(event.getAppointment());
+                        view.onAppointmentRemoved(event.getAppointment());
                         break;
                     case AppointmentEvent.READ_EVENT:
                         view.onAppointmentError(event.getError());

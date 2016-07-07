@@ -32,6 +32,7 @@ public class FirebaseAPI {
      * @param listener Interface to wrap the events of Firebase.
      */
     public void checkForData(final FirebaseActionListenerCallback listener) {
+        firebase.child(APPOINTMETNS_PATH);
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +121,7 @@ public class FirebaseAPI {
      */
     public void remove(Appointment appointment, FirebaseActionListenerCallback
             listener) {
-        firebase.child(appointment.getId()).removeValue();
+        firebase.child(APPOINTMETNS_PATH).child(appointment.getId()).removeValue();
         listener.onSuccess();
     }
 
@@ -204,12 +205,37 @@ public class FirebaseAPI {
         return appointmentReference;
     }
 
-    public Firebase getAppointmentsReference(String appointmentId) {
+    public Firebase getAppointmentsReference() {
         Firebase appointmentReference = null;
-        if (appointmentId != null) {
-            appointmentReference = firebase.getRoot().child(APPOINTMETNS_PATH);
-        }
+        appointmentReference = firebase.getRoot().child(APPOINTMETNS_PATH);
         return appointmentReference;
+    }
+
+    /**
+     * Add the appointment of Firebase.
+     *
+     * @param appointment
+     * @param listener    FirebaseActionListenerCallback
+     */
+    public void addAppointment(Appointment appointment, FirebaseActionListenerCallback
+            listener) {
+        firebase = getAppointmentsReference().push();
+        firebase.setValue(appointment);
+        appointment.setId(firebase.getKey());
+        listener.onSuccess();
+    }
+
+    /**
+     * Modify the appointment of Firebase.
+     *
+     * @param appointment
+     * @param listener    FirebaseActionListenerCallback
+     */
+    public void modifyAppointment(Appointment appointment, FirebaseActionListenerCallback
+            listener) {
+        Firebase ref = getAppointmentsReference().child(appointment.getId());
+        ref.setValue(appointment);
+        listener.onSuccess();
     }
 
     /**

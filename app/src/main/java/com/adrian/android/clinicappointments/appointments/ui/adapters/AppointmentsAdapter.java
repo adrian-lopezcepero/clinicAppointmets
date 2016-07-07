@@ -15,6 +15,8 @@ import com.google.android.gms.maps.MapView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -54,6 +56,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         holder.txtHour.setText(timeFormat.format(appointment.getInitDate()));
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 
+        holder.setOnItemClickListener(appointment, this.onItemClickListener);
+
         // TODO: 6/07/16 Add lat and lgn to googlemaps view
     }
 
@@ -64,7 +68,17 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     public void addAppointment(Appointment appointment) {
         appointments.add(0, appointment);
+        sortAppointmentsByDate();
         notifyDataSetChanged();
+    }
+
+    private void sortAppointmentsByDate() {
+        Collections.sort(appointments, new Comparator<Appointment>() {
+            @Override
+            public int compare(Appointment lhs, Appointment rhs) {
+                return lhs.compareTo(rhs);
+            }
+        });
     }
 
     public void removeAppointment(Appointment appointment) {
@@ -74,10 +88,15 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     public void modifyAppointment(Appointment appointment) {
         for (Appointment appment : appointments) {
-            if (appment.getId() == appointment.getId()) {
-                appment = appointment;
+            if (appment.getId().equals(appointment.getId())) {
+                appment.setPatient(appointment.getPatient());
+                appment.setLongitude(appointment.getLongitude());
+                appment.setLatitude(appointment.getLatitude());
+                appment.setInitDate(appointment.getInitDate());
+                appment.setEndDate(appointment.getEndDate());
             }
         }
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

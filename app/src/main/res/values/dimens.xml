@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="patient_margin">8dp</dimen>
+    <dimen name="timeWidth">100dp</dimen>
 </resources>

@@ -24,8 +24,6 @@ import com.adrian.android.clinicappointments.appointments.ui.adapters.OnItemClic
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.login.ui.LoginActivity;
 
-import java.io.Serializable;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -36,6 +34,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         OnItemClickListener {
 
     public static int ADD_APPOINTMENT = 0;
+    public static int MODIFIED_APPOINTMENT = 1;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -63,7 +62,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         ButterKnife.bind(this);
         setupInjection();
         setupRecyclerView();
-//        appointmentsPresenter.onCreate();
+        appointmentsPresenter.onCreate();
         toolbar.setTitle(getString(R.string.appointments_title));
         setSupportActionBar(toolbar);
     }
@@ -179,8 +178,8 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @Override
     public void onEditClick(Appointment appointment) {
         Intent intent = new Intent(this, AddAppointmentActivity.class);
-        intent.putExtra("appointment", (Serializable) appointment);
-        startActivityForResult(intent, ADD_APPOINTMENT);
+        intent.putExtra("appointment", appointment);
+        startActivityForResult(intent, MODIFIED_APPOINTMENT);
     }
 
     @Override
@@ -191,6 +190,10 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
                 onAppointmentAdded(appointment);
+            } else if (requestCode == MODIFIED_APPOINTMENT) {
+                Appointment appointment = (Appointment) data.getExtras().getSerializable
+                        ("appointment");
+                onAppointmentChanged(appointment);
             }
 
         }

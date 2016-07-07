@@ -2,12 +2,13 @@ package com.adrian.android.clinicappointments.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by adrian on 5/07/16.
  */
-public class Appointment {
+public class Appointment implements Serializable, Comparable<Appointment> {
     public final static boolean CLINICAPPOINTMENT = true;
     @JsonIgnore
     private String id;
@@ -17,7 +18,6 @@ public class Appointment {
     private Patient patient;
     private Double longitude;
     private Double latitude;
-    private boolean isClinicappointment;
 
     public String getId() {
         return id;
@@ -27,13 +27,6 @@ public class Appointment {
         this.id = id;
     }
 
-    public boolean isClinicappointment() {
-        return isClinicappointment;
-    }
-
-    public void setClinicappointment(boolean clinicappointment) {
-        isClinicappointment = clinicappointment;
-    }
 
     public Date getInitDate() {
         return initDate;
@@ -82,7 +75,6 @@ public class Appointment {
 
         Appointment that = (Appointment) o;
 
-        if (isClinicappointment != that.isClinicappointment) return false;
         if (!initDate.equals(that.initDate)) return false;
         if (!endDate.equals(that.endDate)) return false;
         if (!patient.equals(that.patient)) return false;
@@ -99,7 +91,13 @@ public class Appointment {
         result = 31 * result + patient.hashCode();
         result = 31 * result + (longitude != null ? longitude.hashCode() : 0);
         result = 31 * result + (latitude != null ? latitude.hashCode() : 0);
-        result = 31 * result + (isClinicappointment ? 1 : 0);
         return result;
     }
+
+    @Override
+    public int compareTo(Appointment another) {
+        return another.getInitDate().compareTo(this.getInitDate());
+    }
+
+
 }
