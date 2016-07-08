@@ -49,10 +49,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Appointment appointment = appointments.get(position);
-        double lat = appointment.getLatitude();
-        double lng = appointment.getLongitude();
 
-        DateFormat timeFormat = new SimpleDateFormat("HH:MM");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
         holder.txtHour.setText(timeFormat.format(appointment.getInitDate()));
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 

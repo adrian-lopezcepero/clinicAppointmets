@@ -83,9 +83,9 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
         setupInjection();
 
         presenter.onCreate();
-        setupMap();
 
         setTitle(getString(R.string.addappointments_title_newAppointment));
+        setupMap();
         checkForData();
 
     }
@@ -109,7 +109,7 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
 
     private void setDatetimeInputs(Date datetime) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat tf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
         txtTime.setText(tf.format(datetime));
         txtDate.setText(df.format(datetime));
     }
@@ -163,6 +163,10 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     @OnClick(R.id.btnSearchMap)
     @Override
     public void onAddAddressToMap() {
+        addAddressToMap();
+    }
+
+    private void addAddressToMap() {
         String address = txtAddress.getText().toString();
         if (address != null && !address.isEmpty()) {
             LatLng location = util.getLocationFromAddress(address);
@@ -173,7 +177,6 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
                 map.clear();
                 marker = map.addMarker(new MarkerOptions().position(location));
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
-
             }
         }
     }
@@ -215,8 +218,10 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     private void setAppointmentOnInputs(Appointment appointment) {
         setDatetimeInputs(appointment.getInitDate());
         editTxtPatient.setText(appointment.getPatient().getPatient());
-        txtAddress.setText(appointment.getLatitude().toString() + "," +
-                appointment.getLongitude().toString());
+        Double lat = Double.parseDouble(appointment.getLatitude());
+        Double lng = Double.parseDouble(appointment.getLongitude());
+        String address = util.getFromLocation(lat, lng);
+        txtAddress.setText(address);
     }
 
     private void setCurrentDatetime() {
@@ -225,15 +230,17 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     }
 
     private void setAppointmentsFromInputs() {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             String datetime = txtDate.getText().toString() + " " + txtTime.getText().toString();
             Date dateFormAppointment = df.parse(datetime);
             appointment.setInitDate(dateFormAppointment);
             appointment.setEndDate(dateFormAppointment);
             if (marker != null) {
-                appointment.setLatitude(marker.getPosition().latitude);
-                appointment.setLongitude(marker.getPosition().longitude);
+                String latStr = String.valueOf(marker.getPosition().latitude);
+                String lngStr = String.valueOf(marker.getPosition().longitude);
+                appointment.setLatitude(latStr);
+                appointment.setLongitude(lngStr);
             }
             Patient patient = new Patient();
             patient.setPatient(editTxtPatient.getText().toString());
@@ -272,5 +279,6 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
         } else {
             map.setMyLocationEnabled(true);
         }
+        addAddressToMap();
     }
 }

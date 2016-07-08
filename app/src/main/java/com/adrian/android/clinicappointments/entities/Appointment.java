@@ -16,8 +16,8 @@ public class Appointment implements Serializable, Comparable<Appointment> {
     private Date initDate;
     private Date endDate;
     private Patient patient;
-    private Double longitude;
-    private Double latitude;
+    private String longitude;
+    private String latitude;
 
     public String getId() {
         return id;
@@ -52,19 +52,19 @@ public class Appointment implements Serializable, Comparable<Appointment> {
         this.patient = patient;
     }
 
-    public Double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public Double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
