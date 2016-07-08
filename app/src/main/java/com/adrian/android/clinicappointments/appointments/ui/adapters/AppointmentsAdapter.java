@@ -60,11 +60,23 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
                     Double.parseDouble
                             (appointment.getLongitude()));
             holder.txtAddress.setText(address);
+            showAddress(holder);
+        } else {
+            hideAddress(holder);
         }
 
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
 
     }
+
+    private void hideAddress(ViewHolder holder) {
+        holder.txtAddress.setVisibility(View.GONE);
+    }
+
+    private void showAddress(ViewHolder holder) {
+        holder.txtAddress.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public int getItemCount() {

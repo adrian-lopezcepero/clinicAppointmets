@@ -84,6 +84,8 @@ public class AddAppointmentPresenterImpl implements AddAppointmentPresenter {
 
     @Override
     public void addAppointment(Appointment appointment) {
+//        if (appointment.getPatient() == null || appointment.getPatient().getPatient().isEmpty()) {
         addAppointmentInteractor.addAppointment(appointment);
+//        }
     }
 }

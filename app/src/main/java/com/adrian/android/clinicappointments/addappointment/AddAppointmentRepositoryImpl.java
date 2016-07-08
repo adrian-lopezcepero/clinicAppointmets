@@ -12,6 +12,7 @@ import com.firebase.client.FirebaseError;
  */
 public class AddAppointmentRepositoryImpl implements AddAppointmentRepository {
 
+    private static final String EMPTY_PATIENT = "The name of the patient can not be empty";
     EventBus eventBus;
     FirebaseAPI firebaseAPI;
 
@@ -22,32 +23,40 @@ public class AddAppointmentRepositoryImpl implements AddAppointmentRepository {
 
     @Override
     public void addAppointment(final Appointment appointment) {
-        firebaseAPI.addAppointment(appointment, new FirebaseActionListenerCallback() {
-            @Override
-            public void onSuccess() {
-                post(AddAppointmentEvent.ON_ADDED_SUCCESS, appointment);
-            }
+        if (appointment.getPatient() != null && !appointment.getPatient().getPatient().isEmpty()) {
+            firebaseAPI.addAppointment(appointment, new FirebaseActionListenerCallback() {
+                @Override
+                public void onSuccess() {
+                    post(AddAppointmentEvent.ON_ADDED_SUCCESS, appointment);
+                }
 
-            @Override
-            public void onError(FirebaseError error) {
-                post(AddAppointmentEvent.ON_ADDED_ERROR, error.getMessage());
-            }
-        });
+                @Override
+                public void onError(FirebaseError error) {
+                    post(AddAppointmentEvent.ON_ADDED_ERROR, error.getMessage());
+                }
+            });
+        } else {
+            post(AddAppointmentEvent.ON_ADDED_ERROR, EMPTY_PATIENT);
+        }
     }
 
     @Override
     public void modifyAppointment(final Appointment appointment) {
-        firebaseAPI.modifyAppointment(appointment, new FirebaseActionListenerCallback() {
-            @Override
-            public void onSuccess() {
-                post(AddAppointmentEvent.ON_MODIFIED_SUCCESS, appointment);
-            }
+        if (appointment.getPatient() != null && !appointment.getPatient().getPatient().isEmpty()) {
+            firebaseAPI.modifyAppointment(appointment, new FirebaseActionListenerCallback() {
+                @Override
+                public void onSuccess() {
+                    post(AddAppointmentEvent.ON_MODIFIED_SUCCESS, appointment);
+                }
 
-            @Override
-            public void onError(FirebaseError error) {
-                post(AddAppointmentEvent.ON_MODIFIED_ERROR, error.getMessage());
-            }
-        });
+                @Override
+                public void onError(FirebaseError error) {
+                    post(AddAppointmentEvent.ON_MODIFIED_ERROR, error.getMessage());
+                }
+            });
+        } else {
+            post(AddAppointmentEvent.ON_MODIFIED_ERROR, EMPTY_PATIENT);
+        }
     }
 
     private void post(int type, Appointment appointment) {
