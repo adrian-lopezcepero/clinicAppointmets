@@ -84,9 +84,11 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     }
 
     public void addAppointment(Appointment appointment) {
-        appointments.add(0, appointment);
-        sortAppointmentsByDate();
-        notifyDataSetChanged();
+        if (getAppointmentById(appointment.getId()) == null) {
+            appointments.add(0, appointment);
+            sortAppointmentsByDate();
+            notifyDataSetChanged();
+        }
     }
 
     private void sortAppointmentsByDate() {
@@ -105,8 +107,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     private Appointment getAppointmentById(String id) {
         Appointment appointment = null;
-        for (Appointment item :
-                appointments) {
+        for (Appointment item : appointments) {
             if (item.getId().equals(id)) {
                 appointment = item;
             }
@@ -124,6 +125,11 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
             appment.setInitDate(appointment.getInitDate());
             appment.setEndDate(appointment.getEndDate());
         }
+        notifyDataSetChanged();
+    }
+
+    public void clearAppointments() {
+        appointments.clear();
         notifyDataSetChanged();
     }
 

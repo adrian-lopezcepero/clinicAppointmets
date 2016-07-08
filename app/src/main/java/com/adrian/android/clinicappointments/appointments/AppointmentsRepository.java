@@ -2,6 +2,8 @@ package com.adrian.android.clinicappointments.appointments;
 
 import com.adrian.android.clinicappointments.entities.Appointment;
 
+import java.util.Date;
+
 /**
  * Created by adrian on 6/07/16.
  */
@@ -12,9 +14,13 @@ public interface AppointmentsRepository {
 
     void removeAppointment(Appointment appointment);
 
-    void subscribeToAppointmentsEvents();
+    void subscribeToAppointmentsEvents(Date date);
 
     void unsubscribeToAppointmentsEvents();
+
+    void subscribeToCheckForData();
+
+    void unsubscribeToCheckForData();
 
     void destroyListener();
 

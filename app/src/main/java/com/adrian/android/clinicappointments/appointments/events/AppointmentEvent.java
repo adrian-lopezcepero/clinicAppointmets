@@ -10,6 +10,7 @@ public class AppointmentEvent {
     public final static int ONAPPOINTMENT_REMOVED = 1;
     public final static int ONAPPOINTMENT_CHANGED = 2;
     public static final int READ_EVENT = 3;
+    public static final int ON_DATE_CHANGED = 4;
 
     private int eventType;
     private Appointment appointment;

@@ -2,6 +2,8 @@ package com.adrian.android.clinicappointments.appointments;
 
 import com.adrian.android.clinicappointments.entities.Appointment;
 
+import java.util.Date;
+
 /**
  * Created by adrian on 6/07/16.
  */
@@ -13,8 +15,13 @@ public class AppointmentsInteractorImpl implements AppointmentsInteractor {
     }
 
     @Override
-    public void subscribe() {
-        repository.subscribeToAppointmentsEvents();
+    public void subscribeToCheckForData() {
+        repository.subscribeToCheckForData();
+    }
+
+    @Override
+    public void subscribe(Date date) {
+        repository.subscribeToAppointmentsEvents(date);
     }
 
     @Override

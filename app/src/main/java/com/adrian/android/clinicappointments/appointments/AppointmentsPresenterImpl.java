@@ -7,6 +7,8 @@ import com.adrian.android.clinicappointments.libs.base.EventBus;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Date;
+
 /**
  * Created by adrian on 6/07/16.
  */
@@ -37,8 +39,9 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
     }
 
     @Override
-    public void onCreate() {
-        appointmentsInteractor.subscribe();
+    public void onCreate(Date date) {
+        appointmentsInteractor.subscribe(date);
+
     }
 
     @Override
@@ -48,17 +51,22 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
     }
 
     @Override
-    public void subscribe() {
+    public void subscribe(Date date) {
         if (view != null) {
             view.hideList();
             view.showProgress();
         }
-        appointmentsInteractor.subscribe();
+        appointmentsInteractor.subscribe(date);
     }
 
     @Override
     public void unsubscribe() {
         appointmentsInteractor.unsubscribe();
+    }
+
+    @Override
+    public void subsribeToCeckForData() {
+        appointmentsInteractor.subscribeToCheckForData();
     }
 
     @Override
@@ -87,6 +95,9 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
                         break;
                     case AppointmentEvent.READ_EVENT:
                         view.onAppointmentError(event.getError());
+                        break;
+                    case AppointmentEvent.ON_DATE_CHANGED:
+                        view.onDateChanged(event.getAppointment());
                         break;
                 }
             }

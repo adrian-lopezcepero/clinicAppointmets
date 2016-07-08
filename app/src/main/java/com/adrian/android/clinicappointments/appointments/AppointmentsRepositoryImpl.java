@@ -4,10 +4,14 @@ import com.adrian.android.clinicappointments.appointments.events.AppointmentEven
 import com.adrian.android.clinicappointments.domain.FirebaseAPI;
 import com.adrian.android.clinicappointments.domain.FirebaseActionListenerCallback;
 import com.adrian.android.clinicappointments.domain.FirebaseEventListener;
+import com.adrian.android.clinicappointments.domain.FirebaseFilterListenerCallback;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.libs.base.EventBus;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by adrian on 6/07/16.
@@ -47,41 +51,55 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
         });
     }
 
+    @Override
+    public void subscribeToCheckForData() {
+        firebaseAPI.checkForData(new FirebaseFilterListenerCallback() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Appointment appointment = child.getValue
+                            (Appointment.class);
+                    appointment.setId(child.getKey());
+                    post(AppointmentEvent.ON_DATE_CHANGED,
+                            appointment);
+                }
+            }
+
+            @Override
+            public void onError(FirebaseError error) {
+                if (error != null) {
+                    post(AppointmentEvent.READ_EVENT, error.getMessage());
+                }
+            }
+        });
+    }
 
     @Override
-    public void subscribeToAppointmentsEvents() {
-//        firebaseAPI.checkForData(new FirebaseActionListenerCallback() {
-//            @Override
-//            public void onSuccess() {
-//                String s = new String ();
-//            }
-//
-//            @Override
-//            public void onError(FirebaseError error) {
-//                if (error != null) {
-//                    post(AppointmentEvent.READ_EVENT, error.getMessage());
-//                }
-//            }
-//        });
+    public void unsubscribeToCheckForData() {
+        firebaseAPI.destroyCheckForDataListener();
+    }
+
+    public Date getEnDate(Date initDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(initDate);
+        cal.add(Calendar.DATE, 1);
+        return cal.getTime();
+    }
+
+    @Override
+    public void subscribeToAppointmentsEvents(final Date date) {
+        final Date endDate = getEnDate(date);
         firebaseAPI.subscribe(new FirebaseEventListener() {
                                   @Override
                                   public void onChildAdded(DataSnapshot dataSnapshot) {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-
-                                      post(AppointmentEvent.ONAPPOINTMENT_ADDED,
-                                              appointment);
-//                                      if (dataSnapshot.getChildrenCount() > 0) {
-//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                                              Appointment appointment = child.getValue
-//                                                      (Appointment.class);
-//                                              appointment.setId(child.getKey());
-//
-//                                              post(AppointmentEvent.ONAPPOINTMENT_ADDED,
-//                                                      appointment);
-//                                          }
-//                                      }
+                                      if (appointment.getInitDate().after(date) &&
+                                              appointment.getInitDate().before(endDate)) {
+                                          post(AppointmentEvent.ONAPPOINTMENT_ADDED,
+                                                  appointment);
+                                      }
                                   }
 
                                   @Override
@@ -89,19 +107,11 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-
-                                      post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
-                                              appointment);
-//                                      if (dataSnapshot.getChildrenCount() > 0) {
-//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                                              Appointment appointment = child.getValue
-//                                                      (Appointment.class);
-//
-//                                              post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
-//                                                      appointment);
-//                                          }
-//                                      }
-
+                                      if (appointment.getInitDate().after(date) &&
+                                              appointment.getInitDate().before(endDate)) {
+                                          post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
+                                                  appointment);
+                                      }
                                   }
 
                                   @Override
@@ -114,19 +124,11 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-
-                                      post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
-                                              appointment);
-//                                      if (dataSnapshot.getChildrenCount() > 0) {
-//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                                              Appointment appointment = child.getValue
-//                                                      (Appointment.class);
-//                                              appointment.setId(child.getKey());
-//
-//                                              post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
-//                                                      appointment);
-//                                          }
-//                                      }
+                                      if (appointment.getInitDate().after(date) &&
+                                              appointment.getInitDate().before(endDate)) {
+                                          post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
+                                                  appointment);
+                                      }
                                   }
 
                               }

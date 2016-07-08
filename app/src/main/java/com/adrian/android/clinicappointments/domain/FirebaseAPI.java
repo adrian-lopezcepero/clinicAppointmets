@@ -21,33 +21,38 @@ public class FirebaseAPI {
     public final static String APPOINTMETNS_PATH = "appointments";
     private Firebase firebase;
     private ChildEventListener appointmentEventListener;
+    private ValueEventListener valueEventListener;
 
     public FirebaseAPI(Firebase firebase) {
         this.firebase = firebase;
     }
+
 
     /**
      * Check if Firebase return an Appointment at Least.
      *
      * @param listener Interface to wrap the events of Firebase.
      */
-    public void checkForData(final FirebaseActionListenerCallback listener) {
-        firebase.child(APPOINTMETNS_PATH);
-        firebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() > 0) {
-                    listener.onSuccess();
-                } else
-                    listener.onError(null);
-            }
+    public void checkForData(final FirebaseFilterListenerCallback listener) {
+        if (valueEventListener == null) {
+            valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getChildrenCount() > 0) {
+                        listener.onSuccess(dataSnapshot);
+                    } else
+                        listener.onError(null);
+                }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                listener.onError(firebaseError);
-            }
-        });
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    listener.onError(firebaseError);
+                }
+            };
+        }
+        getAppointmentsReference().addValueEventListener(valueEventListener);
     }
+
 
     /**
      * Assign the wrapper event to Firebase object to detect if there is an action in the
@@ -83,7 +88,8 @@ public class FirebaseAPI {
                     listener.onCancelled(firebaseError);
                 }
             };
-            getAppointmentsReference().addChildEventListener(appointmentEventListener);
+            getAppointmentsReference().addChildEventListener
+                    (appointmentEventListener);
         }
     }
 
@@ -101,16 +107,6 @@ public class FirebaseAPI {
      */
     public String create() {
         return firebase.push().getKey();
-    }
-
-    /**
-     * Send the updated data of the appointment to Firebase.
-     *
-     * @param appointment
-     */
-    public void update(Appointment appointment) {
-        Firebase reference = this.firebase.child(appointment.getId());
-        reference.setValue(appointment);
     }
 
     /**
@@ -247,5 +243,9 @@ public class FirebaseAPI {
 
     public void destroyListener() {
         firebase.removeEventListener(appointmentEventListener);
+    }
+
+    public void destroyCheckForDataListener() {
+        firebase.removeEventListener(valueEventListener);
     }
 }
