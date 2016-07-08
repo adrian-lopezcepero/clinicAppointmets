@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -110,6 +111,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         ImageButton imgDelete;
         @Bind(R.id.layoutButtons)
         LinearLayout layoutButtons;
+        @Bind(R.id.map_layout)
+        FrameLayout mapLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

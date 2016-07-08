@@ -29,6 +29,25 @@
             android:textAppearance="?android:attr/textAppearanceLarge"/>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/map_layout"
+        android:layout_width="@dimen/appointment_container_map_width"
+        android:layout_height="@dimen/appointment_container_map_height"
+        android:layout_below="@id/layoutAddress"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+
+        />
+
+
+    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/addAppointmentMap"-->
+    <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
+    <!--android:layout_width="@dimen/maps_width"-->
+    <!--android:layout_height="@dimen/maps_height"-->
+    <!--android:layout_below="@id/layoutAddress"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_margin="@dimen/activity_horizontal_margin"/>-->
 
     <LinearLayout
         android:id="@+id/layoutButtons"
