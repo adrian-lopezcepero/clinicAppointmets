@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.adrian.android.clinicappointments.R;
 import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
-import com.google.android.gms.maps.MapView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,7 +50,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         Appointment appointment = appointments.get(position);
 
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        holder.txtHour.setText(timeFormat.format(appointment.getInitDate()));
+        String timeStr = timeFormat.format(appointment.getInitDate());
+        holder.txtHour.setText(timeStr);
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
@@ -104,8 +104,6 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         TextView txtPatient;
         @Bind(R.id.layoutPatient)
         LinearLayout layoutPatient;
-        @Bind(R.id.mapview)
-        MapView mapview;
         @Bind(R.id.imgEdit)
         ImageButton imgEdit;
         @Bind(R.id.imgDelete)

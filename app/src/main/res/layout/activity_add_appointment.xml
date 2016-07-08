@@ -79,8 +79,9 @@
                 android:id="@+id/txtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="@string/addappointment.message.address"
-                />
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -103,14 +104,6 @@
               android:layout_below="@id/layoutAddress"
               android:layout_centerHorizontal="true"
               android:layout_margin="@dimen/activity_horizontal_margin"/>
-    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:id="@+id/addAppointmentMap"-->
-    <!--class="com.google.android.gms.maps.SupportMapFragment"-->
-    <!--android:layout_width="@dimen/maps_width"-->
-    <!--android:layout_height="@dimen/maps_height"-->
-    <!--android:layout_below="@id/layoutAddress"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_margin="@dimen/activity_horizontal_margin"/>-->
 
     <LinearLayout
         android:id="@+id/layoutButtons"

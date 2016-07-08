@@ -81,12 +81,12 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
         setContentView(R.layout.activity_add_appointment);
         ButterKnife.bind(this);
         setupInjection();
+        setupMap();
 
         presenter.onCreate();
 
-        setTitle(getString(R.string.addappointments_title_newAppointment));
-        setupMap();
         checkForData();
+        setTitle(getString(R.string.addappointments_title_newAppointment));
 
     }
 
@@ -218,10 +218,12 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     private void setAppointmentOnInputs(Appointment appointment) {
         setDatetimeInputs(appointment.getInitDate());
         editTxtPatient.setText(appointment.getPatient().getPatient());
-        Double lat = Double.parseDouble(appointment.getLatitude());
-        Double lng = Double.parseDouble(appointment.getLongitude());
-        String address = util.getFromLocation(lat, lng);
-        txtAddress.setText(address);
+        if (appointment.getLatitude() != null && appointment.getLongitude() != null) {
+            Double lat = Double.parseDouble(appointment.getLatitude());
+            Double lng = Double.parseDouble(appointment.getLongitude());
+            String address = util.getFromLocation(lat, lng);
+            txtAddress.setText(address);
+        }
     }
 
     private void setCurrentDatetime() {
