@@ -9,4 +9,6 @@ public interface OnItemClickListener {
     void onDeleteClick(Appointment appointment);
 
     void onEditClick(Appointment appointment);
+
+    void onPlaceClick(Appointment appointment);
 }

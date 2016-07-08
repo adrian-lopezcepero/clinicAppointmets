@@ -140,6 +140,13 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
                     listener.onDeleteClick(appointment);
                 }
             });
+
+            txtAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPlaceClick(appointment);
+                }
+            });
         }
 
     }

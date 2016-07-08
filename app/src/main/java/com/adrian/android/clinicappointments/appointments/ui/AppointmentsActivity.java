@@ -2,6 +2,7 @@ package com.adrian.android.clinicappointments.appointments.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import com.adrian.android.clinicappointments.addappointment.ui.AddAppointmentAct
 import com.adrian.android.clinicappointments.appointments.AppointmentsPresenter;
 import com.adrian.android.clinicappointments.appointments.ui.adapters.AppointmentsAdapter;
 import com.adrian.android.clinicappointments.appointments.ui.adapters.OnItemClickListener;
+import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.login.ui.LoginActivity;
 
@@ -53,6 +55,8 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     AppointmentsAdapter adapter;
     @Inject
     SharedPreferences sharedPreferences;
+    @Inject
+    Util util;
 
 
     @Override
@@ -181,6 +185,20 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         intent.putExtra("appointment", appointment);
         startActivityForResult(intent, MODIFIED_APPOINTMENT);
     }
+
+    @Override
+    public void onPlaceClick(Appointment appointment) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Double lat = Double.parseDouble(appointment.getLatitude());
+        Double lng = Double.parseDouble(appointment.getLongitude());
+        String uriStr = "geo:" + appointment.getLatitude() + "," + appointment.getLongitude() +
+                "?q=" + util.getFromLocation(lat, lng);
+        intent.setData(Uri.parse(uriStr));
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
