@@ -3,6 +3,9 @@ package com.adrian.android.clinicappointments.domain;
 import android.location.Address;
 import android.location.Geocoder;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -36,6 +39,24 @@ public class Util {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public LatLng getLocationFromAddress(String strAddress) {
+
+        List<Address> addressList;
+        LatLng latLng = null;
+
+        try {
+            addressList = this.geocoder.getFromLocationName(strAddress, 1);
+            if (addressList == null || addressList.isEmpty()) {
+                return null;
+            }
+            Address address = addressList.get(0);
+            latLng = new LatLng(address.getLatitude(), address.getLongitude());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return latLng;
     }
 
     private String md5(final String s) {

@@ -69,6 +69,7 @@
             android:id="@+id/imgEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
             android:src="@android:drawable/ic_menu_edit"
             android:tint="@color/common_google_signin_btn_text_dark_default"/>
@@ -77,6 +78,7 @@
             android:id="@+id/imgDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
             android:backgroundTint="@color/colorAccent"
             android:src="@android:drawable/ic_menu_delete"
             android:tint="@android:color/white"/>

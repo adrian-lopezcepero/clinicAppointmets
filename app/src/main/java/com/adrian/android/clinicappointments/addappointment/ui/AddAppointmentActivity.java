@@ -1,20 +1,35 @@
 package com.adrian.android.clinicappointments.addappointment.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.adrian.android.clinicappointments.ClinicAppointmentsApp;
 import com.adrian.android.clinicappointments.R;
 import com.adrian.android.clinicappointments.addappointment.AddAppointmentPresenter;
+import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.entities.Patient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +41,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddAppointmentActivity extends AppCompatActivity implements AddAppointmentView {
+public class AddAppointmentActivity extends AppCompatActivity implements AddAppointmentView,
+        OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
+
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1;
+
 
     @Bind(R.id.editTxtPatient)
     EditText editTxtPatient;
@@ -42,11 +61,19 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     ProgressBar progressBar;
     @Bind(R.id.layoutAddAppointmetContainer)
     RelativeLayout layoutAddAppointmetContainer;
+    @Bind(R.id.btnSearchMap)
+    ImageButton btnSearchMap;
+    @Bind(R.id.layoutAddress)
+    LinearLayout layoutAddress;
 
     @Inject
     AddAppointmentPresenter presenter;
+    @Inject
+    Util util;
 
     private Appointment appointment;
+    private GoogleMap map;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +81,20 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
         setContentView(R.layout.activity_add_appointment);
         ButterKnife.bind(this);
         setupInjection();
+
         presenter.onCreate();
+        setupMap();
 
         setTitle(getString(R.string.addappointments_title_newAppointment));
         checkForData();
 
+    }
+
+    private void setupMap() {
+        FragmentManager fm = getSupportFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id
+                .addAppointmentMap);
+        mapFragment.getMapAsync(this);
     }
 
     private void checkForData() {
@@ -124,6 +160,23 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
         }
     }
 
+    @OnClick(R.id.btnSearchMap)
+    @Override
+    public void onAddAddressToMap() {
+        String address = txtAddress.getText().toString();
+        if (address != null && !address.isEmpty()) {
+            LatLng location = util.getLocationFromAddress(address);
+            if (location == null) {
+                String errorMsg = getString(R.string.addappointments_error_address);
+                Snackbar.make(layoutAddAppointmetContainer, errorMsg, Snackbar.LENGTH_SHORT).show();
+            } else {
+                map.clear();
+                marker = map.addMarker(new MarkerOptions().position(location));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+
+            }
+        }
+    }
 
     @Override
     public void addAppointment(Appointment appointment) {
@@ -178,8 +231,10 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
             Date dateFormAppointment = df.parse(datetime);
             appointment.setInitDate(dateFormAppointment);
             appointment.setEndDate(dateFormAppointment);
-            appointment.setLatitude(0.0);
-            appointment.setLongitude(0.0);
+            if (marker != null) {
+                appointment.setLatitude(marker.getPosition().latitude);
+                appointment.setLongitude(marker.getPosition().longitude);
+            }
             Patient patient = new Patient();
             patient.setPatient(editTxtPatient.getText().toString());
             appointment.setPatient(patient);
@@ -191,4 +246,31 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     }
 
 
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.setInfoWindowAdapter(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission
+                        .ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+            }
+        } else {
+            map.setMyLocationEnabled(true);
+        }
+    }
 }

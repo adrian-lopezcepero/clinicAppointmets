@@ -16,6 +16,8 @@ public interface AddAppointmentView {
 
     void onAddAppointment();
 
+    void onAddAddressToMap();
+
     void showError(String error);
 
     void addAppointment(Appointment appointment);

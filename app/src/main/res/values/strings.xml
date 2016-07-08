@@ -21,9 +21,11 @@
     <string name="addappointments.title.modifiedAppointment">Modified Appointment</string>
     <string name="addappointment.message.patient">Introduce patient name</string>
     <string name="addappointment.message.accept">Accept</string>
+    <string name="addappointment.message.search">Search</string>
     <string name="addappointment.message.time">HH:MM</string>
     <string name="addappointment.message.date">DD/MM/YYYY</string>
     <string name="addappointment.message.address">Address</string>
     <string name="addappointments.error.addapointment">Could not add appointment: %s</string>
     <string name="addappointments.error.datetime">Incorrect date format or time format</string>
+    <string name="addappointments.error.address">Address not found</string>
 </resources>

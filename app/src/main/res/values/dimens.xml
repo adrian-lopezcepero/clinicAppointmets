@@ -5,4 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="patient_margin">8dp</dimen>
     <dimen name="timeWidth">100dp</dimen>
+    <dimen name="maps_height">200dp</dimen>
+    <dimen name="maps_width">200dp</dimen>
+    <dimen name="address_width">300dp</dimen>
 </resources>
