@@ -49,7 +49,10 @@
             android:id="@+id/btnSignin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimary"
             android:backgroundTint="@color/colorPrimary"
+            android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/login.message.signin"
             android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
@@ -57,7 +60,10 @@
             android:id="@+id/btnSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/common_google_signin_btn_text_dark_default"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@android:color/white"
+            android:backgroundTint="@android:color/white"
+            android:padding="@dimen/activity_horizontal_margin"
             android:shadowColor="@color/colorPrimary"
             android:text="@string/login.message.signup"
             android:textColor="@color/colorPrimary"/>

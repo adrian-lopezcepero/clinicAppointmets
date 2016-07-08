@@ -3,7 +3,7 @@
     <string name="login.message.email">Email</string>
     <string name="login.message.password">Password</string>
     <string name="login.message.signin">Sign In</string>
-    <string name="login.message.signup">Go to Sign Un</string>
+    <string name="login.message.signup">Go to Sign Up</string>
     <string name="login.error.message.signin">Cant perform login %s</string>
 
     <string name="signup.title">Create new account</string>

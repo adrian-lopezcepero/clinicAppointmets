@@ -14,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrian.android.clinicappointments.ClinicAppointmentsApp;
 import com.adrian.android.clinicappointments.R;
@@ -25,6 +27,9 @@ import com.adrian.android.clinicappointments.appointments.ui.adapters.OnItemClic
 import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.login.ui.LoginActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -48,6 +53,12 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     FloatingActionButton fab;
     @Bind(R.id.appointmentsContainer)
     CoordinatorLayout appointmentsContainer;
+    @Bind(R.id.prevDateBtn)
+    ImageButton prevDateBtn;
+    @Bind(R.id.textViewDate)
+    TextView textViewDate;
+    @Bind(R.id.nextDateBtn)
+    ImageButton nextDateBtn;
 
     @Inject
     AppointmentsPresenter appointmentsPresenter;
@@ -58,6 +69,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @Inject
     Util util;
 
+    private Date dateFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +78,17 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         ButterKnife.bind(this);
         setupInjection();
         setupRecyclerView();
+
+        setDateFilter();
         appointmentsPresenter.onCreate();
         toolbar.setTitle(getString(R.string.appointments_title));
         setSupportActionBar(toolbar);
+    }
+
+    private void setDateFilter() {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        dateFilter = new Date();
+        textViewDate.setText(df.format(dateFilter));
     }
 
 
