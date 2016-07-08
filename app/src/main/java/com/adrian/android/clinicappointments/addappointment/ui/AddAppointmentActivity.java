@@ -85,8 +85,8 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
 
         presenter.onCreate();
 
-        checkForData();
         setTitle(getString(R.string.addappointments_title_newAppointment));
+        checkForData();
 
     }
 

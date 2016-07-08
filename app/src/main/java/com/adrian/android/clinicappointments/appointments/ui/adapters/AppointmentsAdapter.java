@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +42,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .content_appointment, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -55,9 +55,15 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         holder.txtHour.setText(timeStr);
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 
+        if (appointment.getLatitude() != null && appointment.getLongitude() != null) {
+            String address = util.getFromLocation(Double.parseDouble(appointment.getLatitude()),
+                    Double.parseDouble
+                            (appointment.getLongitude()));
+            holder.txtAddress.setText(address);
+        }
+
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
 
-        // TODO: 6/07/16 Add lat and lgn to googlemaps view
     }
 
     @Override
@@ -111,8 +117,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         ImageButton imgDelete;
         @Bind(R.id.layoutButtons)
         LinearLayout layoutButtons;
-        @Bind(R.id.map_layout)
-        FrameLayout mapLayout;
+        @Bind(R.id.txtAddress)
+        TextView txtAddress;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -134,7 +140,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
                     listener.onDeleteClick(appointment);
                 }
             });
-            // TODO: 6/07/16 Add click event to googlemaps view to open google maps
         }
+
     }
 }

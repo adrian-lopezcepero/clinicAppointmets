@@ -29,31 +29,22 @@
             android:textAppearance="?android:attr/textAppearanceLarge"/>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/map_layout"
-        android:layout_width="@dimen/appointment_container_map_width"
-        android:layout_height="@dimen/appointment_container_map_height"
-        android:layout_below="@id/layoutAddress"
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutPatient"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/activity_vertical_margin"
-
-        />
-
-
-    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:id="@+id/addAppointmentMap"-->
-    <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
-    <!--android:layout_width="@dimen/maps_width"-->
-    <!--android:layout_height="@dimen/maps_height"-->
-    <!--android:layout_below="@id/layoutAddress"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_margin="@dimen/activity_horizontal_margin"/>-->
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/patient_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutPatient"
+        android:layout_below="@+id/txtAddress"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
