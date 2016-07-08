@@ -63,6 +63,7 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
                     post(AppointmentEvent.ON_DATE_CHANGED,
                             appointment);
                 }
+                firebaseAPI.unsubscribeToCheckForData();
             }
 
             @Override

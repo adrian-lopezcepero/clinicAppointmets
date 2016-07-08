@@ -248,4 +248,9 @@ public class FirebaseAPI {
     public void destroyCheckForDataListener() {
         firebase.removeEventListener(valueEventListener);
     }
+
+    public void unsubscribeToCheckForData() {
+        getAppointmentsReference().removeEventListener(valueEventListener);
+
+    }
 }

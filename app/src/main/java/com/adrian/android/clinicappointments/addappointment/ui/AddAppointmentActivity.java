@@ -205,6 +205,7 @@ public class AddAppointmentActivity extends AppCompatActivity implements AddAppo
     public void showError(String error) {
         String errorMsg = String.format(getString(R.string.addappointments_error_addapointment),
                 error);
+        appointment = null;
         Snackbar.make(layoutAddAppointmetContainer, errorMsg, Snackbar.LENGTH_LONG).show();
     }
 
