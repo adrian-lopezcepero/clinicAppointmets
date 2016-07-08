@@ -66,30 +66,41 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
         firebaseAPI.subscribe(new FirebaseEventListener() {
                                   @Override
                                   public void onChildAdded(DataSnapshot dataSnapshot) {
-                                      if (dataSnapshot.getChildrenCount() > 0) {
-                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                              Appointment appointment = child.getValue
-                                                      (Appointment.class);
-                                              appointment.setId(child.getKey());
+                                      Appointment appointment = dataSnapshot.getValue
+                                              (Appointment.class);
+                                      appointment.setId(dataSnapshot.getKey());
 
-                                              post(AppointmentEvent.ONAPPOINTMENT_ADDED,
-                                                      appointment);
-                                          }
-                                      }
+                                      post(AppointmentEvent.ONAPPOINTMENT_ADDED,
+                                              appointment);
+//                                      if (dataSnapshot.getChildrenCount() > 0) {
+//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                                              Appointment appointment = child.getValue
+//                                                      (Appointment.class);
+//                                              appointment.setId(child.getKey());
+//
+//                                              post(AppointmentEvent.ONAPPOINTMENT_ADDED,
+//                                                      appointment);
+//                                          }
+//                                      }
                                   }
 
                                   @Override
                                   public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                      if (dataSnapshot.getChildrenCount() > 0) {
-                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                              Appointment appointment = child.getValue
-                                                      (Appointment.class);
-//                                              appointment.setId(dataSnapshot.getKey());
+                                      Appointment appointment = dataSnapshot.getValue
+                                              (Appointment.class);
+                                      appointment.setId(dataSnapshot.getKey());
 
-                                              post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
-                                                      appointment);
-                                          }
-                                      }
+                                      post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
+                                              appointment);
+//                                      if (dataSnapshot.getChildrenCount() > 0) {
+//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                                              Appointment appointment = child.getValue
+//                                                      (Appointment.class);
+//
+//                                              post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
+//                                                      appointment);
+//                                          }
+//                                      }
 
                                   }
 
@@ -100,16 +111,22 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
 
                                   @Override
                                   public void onChildChanged(DataSnapshot dataSnapshot) {
-                                      if (dataSnapshot.getChildrenCount() > 0) {
-                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                              Appointment appointment = child.getValue
-                                                      (Appointment.class);
-                                              appointment.setId(child.getKey());
+                                      Appointment appointment = dataSnapshot.getValue
+                                              (Appointment.class);
+                                      appointment.setId(dataSnapshot.getKey());
 
-                                              post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
-                                                      appointment);
-                                          }
-                                      }
+                                      post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
+                                              appointment);
+//                                      if (dataSnapshot.getChildrenCount() > 0) {
+//                                          for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                                              Appointment appointment = child.getValue
+//                                                      (Appointment.class);
+//                                              appointment.setId(child.getKey());
+//
+//                                              post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
+//                                                      appointment);
+//                                          }
+//                                      }
                                   }
 
                               }

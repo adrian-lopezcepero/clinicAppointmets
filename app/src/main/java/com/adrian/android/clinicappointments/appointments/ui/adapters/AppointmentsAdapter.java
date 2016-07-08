@@ -99,19 +99,30 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     }
 
     public void removeAppointment(Appointment appointment) {
-        appointments.remove(appointment);
+        appointments.remove(getAppointmentById(appointment.getId()));
         notifyDataSetChanged();
     }
 
-    public void modifyAppointment(Appointment appointment) {
-        for (Appointment appment : appointments) {
-            if (appment.getId().equals(appointment.getId())) {
-                appment.setPatient(appointment.getPatient());
-                appment.setLongitude(appointment.getLongitude());
-                appment.setLatitude(appointment.getLatitude());
-                appment.setInitDate(appointment.getInitDate());
-                appment.setEndDate(appointment.getEndDate());
+    private Appointment getAppointmentById(String id) {
+        Appointment appointment = null;
+        for (Appointment item :
+                appointments) {
+            if (item.getId().equals(id)) {
+                appointment = item;
             }
+        }
+        return appointment;
+    }
+
+
+    public void modifyAppointment(Appointment appointment) {
+        Appointment appment = getAppointmentById(appointment.getId());
+        if (appment != null) {
+            appment.setPatient(appointment.getPatient());
+            appment.setLongitude(appointment.getLongitude());
+            appment.setLatitude(appointment.getLatitude());
+            appment.setInitDate(appointment.getInitDate());
+            appment.setEndDate(appointment.getEndDate());
         }
         notifyDataSetChanged();
     }

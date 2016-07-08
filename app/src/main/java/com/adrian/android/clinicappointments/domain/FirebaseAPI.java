@@ -83,7 +83,7 @@ public class FirebaseAPI {
                     listener.onCancelled(firebaseError);
                 }
             };
-            firebase.addChildEventListener(appointmentEventListener);
+            getAppointmentsReference().addChildEventListener(appointmentEventListener);
         }
     }
 
@@ -91,7 +91,7 @@ public class FirebaseAPI {
      * Revome the appointmentEventListener from for the Firebase object.
      */
     public void unsubscribe() {
-        firebase.removeEventListener(appointmentEventListener);
+        getAppointmentsReference().removeEventListener(appointmentEventListener);
     }
 
     /**
