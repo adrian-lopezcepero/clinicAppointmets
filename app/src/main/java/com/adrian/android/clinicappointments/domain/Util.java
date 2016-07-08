@@ -27,13 +27,16 @@ public class Util {
 
     public String getFromLocation(double lat, double lng) {
         String result = "";
-        List<Address> addresses = null;
+        List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation(lat, lng, 1);
             Address address = addresses.get(0);
 
-            for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                result += address.getAddressLine(i) + ", ";
+            for (int i = 0; i < address.getMaxAddressLineIndex() + 1; i++) {
+                result += address.getAddressLine(i);
+                if (i != address.getMaxAddressLineIndex()) {
+                    result += ", ";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
