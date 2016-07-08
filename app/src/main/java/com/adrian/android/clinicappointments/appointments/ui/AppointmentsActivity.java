@@ -79,15 +79,15 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         setupInjection();
         setupRecyclerView();
 
-        setDateFilter();
+        setDateFilter(new Date());
         appointmentsPresenter.onCreate();
         toolbar.setTitle(getString(R.string.appointments_title));
         setSupportActionBar(toolbar);
     }
 
-    private void setDateFilter() {
+    private void setDateFilter(Date date) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        dateFilter = new Date();
+        dateFilter = date;
         textViewDate.setText(df.format(dateFilter));
     }
 
