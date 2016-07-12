@@ -40,11 +40,19 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
+    <ImageView
+        android:id="@+id/staticMapImg"
+        android:layout_width="@dimen/static_maps_width"
+        android:layout_height="@dimen/static_maps_height"
+        android:layout_below="@id/txtAddress"
+        android:layout_centerHorizontal="true"
+        android:src="@android:drawable/alert_light_frame"/>
+
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtAddress"
+        android:layout_below="@+id/staticMapImg"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
