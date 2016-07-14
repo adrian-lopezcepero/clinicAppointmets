@@ -2,12 +2,11 @@ package com.adrian.android.clinicappointments.domain;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -89,21 +88,14 @@ public class Util {
         return "";
     }
 
-    public String getStaticMapURL(String address, String googleAPIKey) {
-//        String addressWithoutSpaces = address.replace(" ", "+");
-        String addressMarker = address.replace(",", "\n");
-        String URL = null;
-        try {
-            URL = "https://maps.googleapis.com/maps/api/staticmap?center=" + URLEncoder.encode
-                    (address, "UTF-8") +
-                    "&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:" + URLEncoder
-                    .encode(addressMarker, "UTF-8") + "&key=" + URLEncoder.encode(googleAPIKey,
-                    "UTF-8")
-            ;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return URL;
+    public String getStaticMapURL(String address) {
+        return "https://maps.googleapis.com/maps/api/staticmap" +
+                "?center=" + Uri.encode(address) +
+                "&zoom=17" +
+                "&size=180x180" +
+                "&markers=size:medium" +
+                "%7Ccolor:red" +
+                "%7C" + Uri.encode(address);
     }
 
 }

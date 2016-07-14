@@ -36,7 +36,7 @@ public class ClinicAppointmentsApp extends Application {
     }
 
     private void initModules() {
-        libsModule = new LibsModule();
+        libsModule = new LibsModule(this);
         domainModule = new DomainModule();
         clinicAppointmentsAppModule = new ClinicAppointmentsAppModule(this);
     }
@@ -46,7 +46,6 @@ public class ClinicAppointmentsApp extends Application {
     }
 
     public LoginComponent getLoginComponent(LoginView view) {
-//        this.libsModule.setActivity(this);
         return DaggerLoginComponent
                 .builder()
                 .clinicAppointmentsAppModule(clinicAppointmentsAppModule)
@@ -60,7 +59,6 @@ public class ClinicAppointmentsApp extends Application {
     public AppointmentsComponet getAppointmentComponent(
             AppointmentsView view,
             OnItemClickListener onItemClickListener) {
-//        this.libsModule.setActivity(activity);
         return DaggerAppointmentsComponet
                 .builder()
                 .clinicAppointmentsAppModule(clinicAppointmentsAppModule)
@@ -71,7 +69,6 @@ public class ClinicAppointmentsApp extends Application {
     }
 
     public AddAppointmentComponent getAddAppointmentComponent(AddAppointmentView view) {
-//        this.libsModule.setContext(getApplicationContext());
         return DaggerAddAppointmentComponent
                 .builder()
                 .clinicAppointmentsAppModule(clinicAppointmentsAppModule)

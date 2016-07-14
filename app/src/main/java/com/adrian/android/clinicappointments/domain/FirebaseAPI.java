@@ -51,6 +51,8 @@ public class FirebaseAPI {
             };
         }
         getAppointmentsReference().addValueEventListener(valueEventListener);
+//        getAppointmentsReference().orderByChild("initDate").equalTo("").addValueEventListener
+// (valueEventListener);
     }
 
 

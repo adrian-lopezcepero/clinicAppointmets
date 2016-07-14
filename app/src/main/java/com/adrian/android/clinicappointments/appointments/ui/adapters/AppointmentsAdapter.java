@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.adrian.android.clinicappointments.R;
 import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
+import com.adrian.android.clinicappointments.libs.base.ImageLoader;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,31 +30,22 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     Util util;
     List<Appointment> appointments;
-//    ImageLoader imageLoader;
+    ImageLoader imageLoader;
     OnItemClickListener onItemClickListener;
 
-    private String googleApiKey;
-
-    public AppointmentsAdapter(Util util, List<Appointment> appointments, OnItemClickListener
+    public AppointmentsAdapter(Util util, List<Appointment> appointments, ImageLoader
+            imageLoader, OnItemClickListener
                                        onItemClickListener) {
         this.util = util;
+        this.imageLoader = imageLoader;
         this.appointments = appointments;
         this.onItemClickListener = onItemClickListener;
     }
-//  public AppointmentsAdapter(Util util, List<Appointment> appointments, ImageLoader
-//            imageLoader, OnItemClickListener
-//                                       onItemClickListener) {
-//        this.util = util;
-//        this.imageLoader = imageLoader;
-//        this.appointments = appointments;
-//        this.onItemClickListener = onItemClickListener;
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .content_appointment, parent, false);
-        googleApiKey = parent.getContext().getString(R.string.GOOGLE_MAPS_API_KEY);
         return new ViewHolder(view);
     }
 
@@ -71,9 +63,9 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
                     Double.parseDouble
                             (appointment.getLongitude()));
             holder.txtAddress.setText(address);
-            String url = util.getStaticMapURL(address, googleApiKey);
+            String url = util.getStaticMapURL(address);
             if (url != null) {
-//                imageLoader.load(holder.staticMapImg, url);
+                imageLoader.load(holder.staticMapImg, url);
                 showAddress(holder);
                 showMap(holder);
             }

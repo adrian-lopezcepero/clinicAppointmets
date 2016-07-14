@@ -30,7 +30,7 @@ public class ClinicAppointmentsAppModule {
 
     @Provides
     @Singleton
-    Context providesContex() {
+    Context providesContext() {
         return application.getApplicationContext();
     }
 

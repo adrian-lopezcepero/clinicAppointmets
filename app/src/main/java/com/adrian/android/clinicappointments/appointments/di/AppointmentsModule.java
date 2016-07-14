@@ -15,6 +15,7 @@ import com.adrian.android.clinicappointments.domain.FirebaseAPI;
 import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.libs.base.EventBus;
+import com.adrian.android.clinicappointments.libs.base.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,22 +63,22 @@ public class AppointmentsModule {
                 view);
     }
 
-//    @Provides
-//    @Singleton
-//    AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
-//                                                    ImageLoader imageLoader,
-//                                                    OnItemClickListener
-//                                                            onItemClickListener) {
-//        return new AppointmentsAdapter(util, appointments, imageLoader, onItemClickListener);
-//    }
-
     @Provides
     @Singleton
     AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
+                                                    ImageLoader imageLoader,
                                                     OnItemClickListener
                                                             onItemClickListener) {
-        return new AppointmentsAdapter(util, appointments, onItemClickListener);
+        return new AppointmentsAdapter(util, appointments, imageLoader, onItemClickListener);
     }
+
+//    @Provides
+//    @Singleton
+//    AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
+//                                                    OnItemClickListener
+//                                                            onItemClickListener) {
+//        return new AppointmentsAdapter(util, appointments, onItemClickListener);
+//    }
 
     @Provides
     @Singleton
