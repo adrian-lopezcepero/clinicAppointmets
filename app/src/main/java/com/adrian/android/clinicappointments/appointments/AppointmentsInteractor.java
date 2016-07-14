@@ -12,7 +12,7 @@ public interface AppointmentsInteractor {
 
     void unsubscribe();
 
-    void subscribeToCheckForData();
+    void subscribeToCheckForData(Long initDate);
 
     void destroyListener();
 

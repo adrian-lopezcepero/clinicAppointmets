@@ -71,7 +71,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @Inject
     Util util;
 
-    private Date dateFilter;
+    private Date initDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,17 +82,17 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         setupInjection();
         setupRecyclerView();
 
-        setDateFilter(new Date());
-        appointmentsPresenter.onCreate(dateFilter);
+        setInitDate(new Date());
+        appointmentsPresenter.onCreate(initDate);
         toolbar.setTitle(getString(R.string.appointments_title));
         setSupportActionBar(toolbar);
     }
 
-    private void setDateFilter(Date date) {
+    private void setInitDate(Date date) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            dateFilter = df.parse(df.format(date));
-            textViewDate.setText(df.format(dateFilter));
+            initDate = df.parse(df.format(date));
+            textViewDate.setText(df.format(initDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -162,33 +162,31 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @OnClick(R.id.nextDateBtn)
     public void onIncDate() {
         changeFilterDate(true);
-        setDateFilter(dateFilter);
+        setInitDate(initDate);
         adapter.clearAppointments();
-        appointmentsPresenter.subsribeToCeckForData();
+        appointmentsPresenter.subsribeToCeckForData(util.dateToTimeInMillis(initDate));
     }
 
     @OnClick(R.id.prevDateBtn)
     @Override
     public void onDecDate() {
         changeFilterDate(false);
-        setDateFilter(dateFilter);
+        setInitDate(initDate);
         adapter.clearAppointments();
-        appointmentsPresenter.subsribeToCeckForData();
+        appointmentsPresenter.subsribeToCeckForData(util.dateToTimeInMillis(initDate));
     }
 
     private void changeFilterDate(boolean incDate) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFilter);
+        cal.setTime(initDate);
         int day = incDate ? 1 : -1;
         cal.add(Calendar.DATE, day);
-        dateFilter = cal.getTime();
+        initDate = cal.getTime();
     }
 
     @Override
     public void onDateChanged(Appointment appointment) {
-        if (isFilterDate(appointment.getInitDate())) {
             adapter.addAppointment(appointment);
-        }
     }
 
     @Override
@@ -266,29 +264,14 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
             if (requestCode == ADD_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                if (isFilterDate(appointment.getInitDate())) {
                     onAppointmentAdded(appointment);
-                }
             } else if (requestCode == MODIFIED_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                if (isFilterDate(appointment.getInitDate())) {
                     onAppointmentChanged(appointment);
-                }
             }
 
         }
     }
 
-    private boolean isFilterDate(Date initDate) {
-        Date endDate = getEndDate();
-        return initDate.after(dateFilter) && initDate.before(endDate);
-    }
-
-    private Date getEndDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFilter);
-        cal.add(Calendar.DATE, 1);
-        return cal.getTime();
-    }
 }

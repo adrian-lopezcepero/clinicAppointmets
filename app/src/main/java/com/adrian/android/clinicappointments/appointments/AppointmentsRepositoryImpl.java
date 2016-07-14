@@ -52,8 +52,8 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
     }
 
     @Override
-    public void subscribeToCheckForData() {
-        firebaseAPI.checkForData(new FirebaseFilterListenerCallback() {
+    public void subscribeToCheckForData(Long initDate) {
+        firebaseAPI.checkForData(initDate, new FirebaseFilterListenerCallback() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {

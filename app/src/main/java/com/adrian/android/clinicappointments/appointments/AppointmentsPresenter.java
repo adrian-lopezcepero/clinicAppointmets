@@ -21,7 +21,7 @@ public interface AppointmentsPresenter {
 
     void unsubscribe();
 
-    void subsribeToCeckForData();
+    void subsribeToCeckForData(Long intDate);
 
     void onEventMainThread(AppointmentEvent event);
 

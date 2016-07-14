@@ -22,8 +22,8 @@ public class DomainModule {
 
     @Provides
     @Singleton
-    FirebaseAPI providesFirebaseAPI(Firebase firebase) {
-        return new FirebaseAPI(firebase);
+    FirebaseAPI providesFirebaseAPI(Firebase firebase, Util util) {
+        return new FirebaseAPI(firebase, util);
     }
 
     @Provides

@@ -18,7 +18,7 @@ public interface AppointmentsRepository {
 
     void unsubscribeToAppointmentsEvents();
 
-    void subscribeToCheckForData();
+    void subscribeToCheckForData(Long initDate);
 
     void unsubscribeToCheckForData();
 

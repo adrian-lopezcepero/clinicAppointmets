@@ -15,8 +15,8 @@ public class AppointmentsInteractorImpl implements AppointmentsInteractor {
     }
 
     @Override
-    public void subscribeToCheckForData() {
-        repository.subscribeToCheckForData();
+    public void subscribeToCheckForData(Long initDate) {
+        repository.subscribeToCheckForData(initDate);
     }
 
     @Override

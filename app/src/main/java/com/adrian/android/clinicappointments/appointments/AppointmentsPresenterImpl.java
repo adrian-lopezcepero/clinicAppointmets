@@ -65,8 +65,8 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
     }
 
     @Override
-    public void subsribeToCeckForData() {
-        appointmentsInteractor.subscribeToCheckForData();
+    public void subsribeToCeckForData(Long initDate) {
+        appointmentsInteractor.subscribeToCheckForData(initDate);
     }
 
     @Override

@@ -72,13 +72,6 @@ public class AppointmentsModule {
         return new AppointmentsAdapter(util, appointments, imageLoader, onItemClickListener);
     }
 
-//    @Provides
-//    @Singleton
-//    AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
-//                                                    OnItemClickListener
-//                                                            onItemClickListener) {
-//        return new AppointmentsAdapter(util, appointments, onItemClickListener);
-//    }
 
     @Provides
     @Singleton

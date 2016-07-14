@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,4 +100,24 @@ public class Util {
                 "%7C" + Uri.encode(address);
     }
 
+    public Date getEndDate(Date initDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(initDate);
+        cal.add(Calendar.DATE, 1);
+        return cal.getTime();
+    }
+
+    public Date getEndDate(Long initDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(initDate);
+        cal.add(Calendar.DATE, 1);
+        return cal.getTime();
+    }
+
+
+    public Long dateToTimeInMillis(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.getTimeInMillis();
+    }
 }
