@@ -13,4 +13,5 @@
     <dimen name="appointment_container_map_height">100dp</dimen>
     <dimen name="static_maps_width">100dp</dimen>
     <dimen name="static_maps_height">100dp</dimen>
+    <dimen name="appointments_item_margin">8dp</dimen>
 </resources>

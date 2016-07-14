@@ -53,17 +53,29 @@ public class AppointmentsModule {
     @Singleton
     AppointmentsPresenter providesAppointmentsPresenter(EventBus eventBus,
                                                         AppointmentsSessionInteractor
-            sessionInteractor, AppointmentsInteractor appointmentsInteractor, AppointmentsView
+                                                                sessionInteractor,
+                                                        AppointmentsInteractor
+                                                                appointmentsInteractor,
+                                                        AppointmentsView
                                                                 view) {
         return new AppointmentsPresenterImpl(eventBus, sessionInteractor, appointmentsInteractor,
                 view);
     }
 
+//    @Provides
+//    @Singleton
+//    AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
+//                                                    ImageLoader imageLoader,
+//                                                    OnItemClickListener
+//                                                            onItemClickListener) {
+//        return new AppointmentsAdapter(util, appointments, imageLoader, onItemClickListener);
+//    }
+
     @Provides
     @Singleton
     AppointmentsAdapter providesAppointmentsAdapter(Util util, List<Appointment> appointments,
                                                     OnItemClickListener
-            onItemClickListener) {
+                                                            onItemClickListener) {
         return new AppointmentsAdapter(util, appointments, onItemClickListener);
     }
 

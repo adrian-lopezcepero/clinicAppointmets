@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,23 +27,33 @@ import butterknife.ButterKnife;
  */
 public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapter.ViewHolder> {
 
+    Util util;
+    List<Appointment> appointments;
+//    ImageLoader imageLoader;
+    OnItemClickListener onItemClickListener;
 
-    private Util util;
-    private List<Appointment> appointments;
-    private OnItemClickListener onItemClickListener;
+    private String googleApiKey;
 
     public AppointmentsAdapter(Util util, List<Appointment> appointments, OnItemClickListener
-            onItemClickListener) {
+                                       onItemClickListener) {
         this.util = util;
         this.appointments = appointments;
         this.onItemClickListener = onItemClickListener;
     }
+//  public AppointmentsAdapter(Util util, List<Appointment> appointments, ImageLoader
+//            imageLoader, OnItemClickListener
+//                                       onItemClickListener) {
+//        this.util = util;
+//        this.imageLoader = imageLoader;
+//        this.appointments = appointments;
+//        this.onItemClickListener = onItemClickListener;
+//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .content_appointment, parent, false);
-
+        googleApiKey = parent.getContext().getString(R.string.GOOGLE_MAPS_API_KEY);
         return new ViewHolder(view);
     }
 
@@ -60,13 +71,28 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
                     Double.parseDouble
                             (appointment.getLongitude()));
             holder.txtAddress.setText(address);
-            showAddress(holder);
+            String url = util.getStaticMapURL(address, googleApiKey);
+            if (url != null) {
+//                imageLoader.load(holder.staticMapImg, url);
+                showAddress(holder);
+                showMap(holder);
+            }
+
         } else {
             hideAddress(holder);
+            hideMap(holder);
         }
 
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
 
+    }
+
+    private void hideMap(ViewHolder holder) {
+        holder.staticMapImg.setVisibility(View.GONE);
+    }
+
+    private void showMap(ViewHolder holder) {
+        holder.staticMapImg.setVisibility(View.VISIBLE);
     }
 
     private void hideAddress(ViewHolder holder) {
@@ -148,6 +174,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         LinearLayout layoutButtons;
         @Bind(R.id.txtAddress)
         TextView txtAddress;
+        @Bind(R.id.staticMapImg)
+        ImageView staticMapImg;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -171,6 +199,13 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
             });
 
             txtAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPlaceClick(appointment);
+                }
+            });
+
+            staticMapImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onPlaceClick(appointment);

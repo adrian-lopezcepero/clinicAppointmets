@@ -78,6 +78,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments);
         ButterKnife.bind(this);
+
         setupInjection();
         setupRecyclerView();
 

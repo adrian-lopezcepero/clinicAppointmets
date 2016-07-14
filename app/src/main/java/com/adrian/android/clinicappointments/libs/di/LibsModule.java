@@ -1,11 +1,7 @@
 package com.adrian.android.clinicappointments.libs.di;
 
-import android.app.Fragment;
-
-import com.adrian.android.clinicappointments.libs.GlideImageLoader;
 import com.adrian.android.clinicappointments.libs.GreenRobotEventBus;
 import com.adrian.android.clinicappointments.libs.base.EventBus;
-import com.adrian.android.clinicappointments.libs.base.ImageLoader;
 
 import javax.inject.Singleton;
 
@@ -17,6 +13,15 @@ import dagger.Provides;
  */
 @Module
 public class LibsModule {
+//    Activity activity;
+
+//    public LibsModule(Context context) {
+//        this.context = context;
+//    }
+
+//    public void setActivity(Activity activity) {
+//        this.activity = activity;
+//    }
 
     @Provides
     @Singleton
@@ -24,13 +29,14 @@ public class LibsModule {
         return new GreenRobotEventBus();
     }
 
-    @Provides
-    @Singleton
-    ImageLoader providesImageLoader(Fragment fragment) {
-        GlideImageLoader imageLoader = new GlideImageLoader();
-        if (fragment != null) {
-            imageLoader.setLoaderContext(fragment);
-        }
-        return imageLoader;
-    }
+//    @Provides
+//    @Singleton
+//    public ImageLoader providesImageLoader() {
+//        GlideImageLoader imageLoader = new GlideImageLoader();
+//        if (activity != null) {
+//            imageLoader.setActivity(this.activity);
+//        }
+//        return imageLoader;
+//    }
+
 }
