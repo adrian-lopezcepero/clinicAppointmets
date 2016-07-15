@@ -15,4 +15,6 @@
     <dimen name="static_maps_height">100dp</dimen>
     <dimen name="appointments_item_margin">8dp</dimen>
     <dimen name="buttons_Padding">2dp</dimen>
+    <dimen name="logoTextSize">20dp</dimen>
+    <dimen name="logoWidth">80dp</dimen>
 </resources>
