@@ -1,5 +1,6 @@
 package com.adrian.android.clinicappointments.appointments.ui.adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,11 +81,11 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     }
 
     private void hideMap(ViewHolder holder) {
-        holder.staticMapImg.setVisibility(View.GONE);
+        holder.cardViewMap.setVisibility(View.GONE);
     }
 
     private void showMap(ViewHolder holder) {
-        holder.staticMapImg.setVisibility(View.VISIBLE);
+        holder.cardViewMap.setVisibility(View.VISIBLE);
     }
 
     private void hideAddress(ViewHolder holder) {
@@ -168,6 +169,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         TextView txtAddress;
         @Bind(R.id.staticMapImg)
         ImageView staticMapImg;
+        @Bind(R.id.cardViewMap)
+        CardView cardViewMap;
 
         public ViewHolder(View itemView) {
             super(itemView);
