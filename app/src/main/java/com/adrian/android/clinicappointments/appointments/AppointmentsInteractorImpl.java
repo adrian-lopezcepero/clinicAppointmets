@@ -2,7 +2,7 @@ package com.adrian.android.clinicappointments.appointments;
 
 import com.adrian.android.clinicappointments.entities.Appointment;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by adrian on 6/07/16.
@@ -20,7 +20,7 @@ public class AppointmentsInteractorImpl implements AppointmentsInteractor {
     }
 
     @Override
-    public void subscribe(Date date) {
+    public void subscribe(Calendar date) {
         repository.subscribeToAppointmentsEvents(date);
     }
 

@@ -16,6 +16,8 @@ public interface AppointmentsView {
 
     void onDecDate();
 
+    void onPickDate();
+
     void hideList();
 
     void showProgress();
@@ -27,4 +29,5 @@ public interface AppointmentsView {
     void onAppointmentError(String error);
 
     void onDateChanged(Appointment appointment);
+
 }
