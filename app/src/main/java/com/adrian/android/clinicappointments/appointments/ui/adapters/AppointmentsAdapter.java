@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adrian.android.clinicappointments.R;
@@ -34,6 +35,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     ImageLoader imageLoader;
     OnItemClickListener onItemClickListener;
 
+
     public AppointmentsAdapter(Util util, List<Appointment> appointments, ImageLoader
             imageLoader, OnItemClickListener
                                        onItemClickListener) {
@@ -52,6 +54,10 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        hideAddress(holder);
+        hideMap(holder);
+        hideMapProgress(holder);
+
         Appointment appointment = appointments.get(position);
 
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -60,24 +66,28 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 
         if (appointment.getLatitude() != null && appointment.getLongitude() != null) {
+            showMapProgress(holder);
             String address = util.getFromLocation(Double.parseDouble(appointment.getLatitude()),
                     Double.parseDouble
                             (appointment.getLongitude()));
             holder.txtAddress.setText(address);
             String url = util.getStaticMapURL(address);
-            if (url != null) {
-                imageLoader.load(holder.staticMapImg, url);
-                showAddress(holder);
-                showMap(holder);
-            }
-
-        } else {
-            hideAddress(holder);
-            hideMap(holder);
+            imageLoader.load(holder.staticMapImg, url);
+            hideMapProgress(holder);
+            showAddress(holder);
+            showMap(holder);
         }
-
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
 
+    }
+
+    private void hideMapProgress(ViewHolder holder) {
+        holder.mapProgress.setVisibility(View.GONE);
+
+    }
+
+    private void showMapProgress(ViewHolder holder) {
+        holder.mapProgress.setVisibility(View.VISIBLE);
     }
 
     private void hideMap(ViewHolder holder) {
@@ -171,6 +181,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         ImageView staticMapImg;
         @Bind(R.id.cardViewMap)
         CardView cardViewMap;
+        @Bind(R.id.mapProgress)
+        ProgressBar mapProgress;
 
         public ViewHolder(View itemView) {
             super(itemView);

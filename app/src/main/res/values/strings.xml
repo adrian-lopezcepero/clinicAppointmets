@@ -28,4 +28,5 @@
     <string name="addappointments.error.addapointment">Could not add appointment: %s</string>
     <string name="addappointments.error.datetime">Incorrect date format or time format</string>
     <string name="addappointments.error.address">Address not found</string>
+    <string name="appointments_pickdate_title">SELECT A DATE</string>
 </resources>

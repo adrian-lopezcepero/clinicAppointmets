@@ -137,7 +137,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
 
     private void logout() {
         appointmentsPresenter.signOff();
-        sharedPreferences.edit().clear().commit();
+        sharedPreferences.edit().clear().apply();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -253,18 +253,21 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @OnClick(R.id.textViewDate)
     @Override
     public void onPickDate() {
-        DatePickerDialog pickerDialog = new DatePickerDialog(this, new DatePickerDialog
-                .OnDateSetListener() {
+        DatePickerDialog pickerDialog = new DatePickerDialog(this, R.style.AppTheme_Dialog, new
+                DatePickerDialog
+                        .OnDateSetListener() {
 
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar cal = Calendar.getInstance();
-                cal.set(year, monthOfYear, dayOfMonth);
-                setInitDate(cal);
-                appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
-            }
-        }, initDate.get(Calendar.YEAR), initDate.get(Calendar.MONTH), initDate.get(Calendar
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int
+                            dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        setInitDate(cal);
+                        appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
+                    }
+                }, initDate.get(Calendar.YEAR), initDate.get(Calendar.MONTH), initDate.get(Calendar
                 .DAY_OF_MONTH));
+        pickerDialog.setTitle(getString(R.string.appointments_pickdate_title));
         pickerDialog.show();
     }
 
