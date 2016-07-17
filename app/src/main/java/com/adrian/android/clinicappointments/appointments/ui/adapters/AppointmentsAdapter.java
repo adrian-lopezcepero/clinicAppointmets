@@ -114,7 +114,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     public void addAppointment(Appointment appointment) {
         if (getAppointmentById(appointment.getId()) == null) {
-            appointments.add(0, appointment);
+            appointments.add(appointment);
             sortAppointmentsByDate();
             notifyDataSetChanged();
         }

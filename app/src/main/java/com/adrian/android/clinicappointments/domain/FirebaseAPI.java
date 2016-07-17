@@ -36,7 +36,6 @@ public class FirebaseAPI {
      * @param listener Interface to wrap the events of Firebase.
      */
     public void checkForData(Long initDate, final FirebaseFilterListenerCallback listener) {
-        Long endDate = initDate;
         if (valueEventListener == null) {
             valueEventListener = new ValueEventListener() {
                 @Override
@@ -54,7 +53,7 @@ public class FirebaseAPI {
             };
         }
 //        getAppointmentsReference().addValueEventListener(valueEventListener);
-        endDate = util.dateToTimeInMillis(util.getEndDate(initDate));
+        Long endDate = util.dateToTimeInMillis(util.getEndDate(initDate));
         getAppointmentsReference().orderByChild("initDate").startAt(initDate).endAt(endDate)
                 .addValueEventListener
                         (valueEventListener);

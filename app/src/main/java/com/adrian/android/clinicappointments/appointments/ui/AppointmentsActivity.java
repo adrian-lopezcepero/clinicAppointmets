@@ -91,6 +91,10 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     private void setInitDate(Calendar calendar) {
         if (calendar == null) {
             calendar = Calendar.getInstance();
+            calendar.clear(Calendar.HOUR);
+            calendar.clear(Calendar.MINUTE);
+            calendar.clear(Calendar.SECOND);
+            calendar.clear(Calendar.MILLISECOND);
         }
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         this.initDate = calendar;
@@ -261,7 +265,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int
                             dayOfMonth) {
                         Calendar cal = Calendar.getInstance();
-                        cal.set(year, monthOfYear, dayOfMonth);
+                        cal.set(year, monthOfYear, dayOfMonth, 0, 0);
                         setInitDate(cal);
                         appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
                     }
@@ -279,10 +283,12 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
                 onAppointmentAdded(appointment);
+                onDateChanged(appointment);
             } else if (requestCode == MODIFIED_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
                 onAppointmentChanged(appointment);
+                onDateChanged(appointment);
             }
 
         }
