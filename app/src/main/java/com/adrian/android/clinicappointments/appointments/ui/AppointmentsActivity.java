@@ -91,10 +91,10 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     private void setInitDate(Calendar calendar) {
         if (calendar == null) {
             calendar = Calendar.getInstance();
-            calendar.clear(Calendar.HOUR);
-            calendar.clear(Calendar.MINUTE);
-            calendar.clear(Calendar.SECOND);
-            calendar.clear(Calendar.MILLISECOND);
+            calendar.set(Calendar.HOUR, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
         }
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         this.initDate = calendar;
@@ -265,8 +265,9 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int
                             dayOfMonth) {
                         Calendar cal = Calendar.getInstance();
-                        cal.set(year, monthOfYear, dayOfMonth, 0, 0);
+                        cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
                         setInitDate(cal);
+                        adapter.clearAppointments();
                         appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
                     }
                 }, initDate.get(Calendar.YEAR), initDate.get(Calendar.MONTH), initDate.get(Calendar
@@ -282,13 +283,17 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
             if (requestCode == ADD_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                onAppointmentAdded(appointment);
-                onDateChanged(appointment);
+                if (appointment.getInitDate().after(initDate.getTime()) &&
+                        appointment.getInitDate().before(util.getEndDate(initDate.getTime()))) {
+                    onAppointmentAdded(appointment);
+                }
             } else if (requestCode == MODIFIED_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                onAppointmentChanged(appointment);
-                onDateChanged(appointment);
+                if (appointment.getInitDate().after(initDate.getTime()) &&
+                        appointment.getInitDate().before(util.getEndDate(initDate.getTime()))) {
+                    onAppointmentChanged(appointment);
+                }
             }
 
         }
