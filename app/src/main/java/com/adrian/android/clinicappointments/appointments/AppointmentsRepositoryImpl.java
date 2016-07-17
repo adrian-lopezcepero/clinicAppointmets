@@ -11,7 +11,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by adrian on 6/07/16.
@@ -52,8 +51,8 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
     }
 
     @Override
-    public void subscribeToCheckForData() {
-        firebaseAPI.checkForData(new FirebaseFilterListenerCallback() {
+    public void subscribeToCheckForData(Long initDate) {
+        firebaseAPI.checkForData(initDate, new FirebaseFilterListenerCallback() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -80,24 +79,24 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
         firebaseAPI.destroyCheckForDataListener();
     }
 
-    public Date getEnDate(Date initDate) {
+    public Calendar getEnDate(Calendar initDate) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(initDate);
+        cal.setTime(initDate.getTime());
         cal.add(Calendar.DATE, 1);
-        return cal.getTime();
+        return cal;
     }
 
     @Override
-    public void subscribeToAppointmentsEvents(final Date date) {
-        final Date endDate = getEnDate(date);
+    public void subscribeToAppointmentsEvents(final Calendar date) {
+        final Calendar endDate = getEnDate(date);
         firebaseAPI.subscribe(new FirebaseEventListener() {
                                   @Override
                                   public void onChildAdded(DataSnapshot dataSnapshot) {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-                                      if (appointment.getInitDate().after(date) &&
-                                              appointment.getInitDate().before(endDate)) {
+                                      if (appointment.getInitDate().after(date.getTime()) &&
+                                              appointment.getInitDate().before(endDate.getTime())) {
                                           post(AppointmentEvent.ONAPPOINTMENT_ADDED,
                                                   appointment);
                                       }
@@ -108,8 +107,8 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-                                      if (appointment.getInitDate().after(date) &&
-                                              appointment.getInitDate().before(endDate)) {
+                                      if (appointment.getInitDate().after(date.getTime()) &&
+                                              appointment.getInitDate().before(endDate.getTime())) {
                                           post(AppointmentEvent.ONAPPOINTMENT_REMOVED,
                                                   appointment);
                                       }
@@ -125,8 +124,8 @@ public class AppointmentsRepositoryImpl implements AppointmentsRepository {
                                       Appointment appointment = dataSnapshot.getValue
                                               (Appointment.class);
                                       appointment.setId(dataSnapshot.getKey());
-                                      if (appointment.getInitDate().after(date) &&
-                                              appointment.getInitDate().before(endDate)) {
+                                      if (appointment.getInitDate().after(date.getTime()) &&
+                                              appointment.getInitDate().before(endDate.getTime())) {
                                           post(AppointmentEvent.ONAPPOINTMENT_CHANGED,
                                                   appointment);
                                       }

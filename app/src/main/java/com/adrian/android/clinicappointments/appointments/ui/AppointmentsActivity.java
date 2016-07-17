@@ -1,5 +1,6 @@
 package com.adrian.android.clinicappointments.appointments.ui;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,10 +30,8 @@ import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
 import com.adrian.android.clinicappointments.login.ui.LoginActivity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -71,32 +71,35 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @Inject
     Util util;
 
-    private Date dateFilter;
+    private Calendar initDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments);
         ButterKnife.bind(this);
+
         setupInjection();
         setupRecyclerView();
 
-        setDateFilter(new Date());
-        appointmentsPresenter.onCreate(dateFilter);
+        setInitDate(null);
+        appointmentsPresenter.onCreate(initDate);
         toolbar.setTitle(getString(R.string.appointments_title));
         setSupportActionBar(toolbar);
     }
 
-    private void setDateFilter(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            dateFilter = df.parse(df.format(date));
-            textViewDate.setText(df.format(dateFilter));
-        } catch (ParseException e) {
-            e.printStackTrace();
+    private void setInitDate(Calendar calendar) {
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
         }
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        this.initDate = calendar;
+        textViewDate.setText(df.format(initDate.getTime()));
     }
-
 
     private void setupInjection() {
         ClinicAppointmentsApp app = (ClinicAppointmentsApp) getApplication();
@@ -138,7 +141,7 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
 
     private void logout() {
         appointmentsPresenter.signOff();
-        sharedPreferences.edit().clear().commit();
+        sharedPreferences.edit().clear().apply();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -161,33 +164,28 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @OnClick(R.id.nextDateBtn)
     public void onIncDate() {
         changeFilterDate(true);
-        setDateFilter(dateFilter);
+        setInitDate(initDate);
         adapter.clearAppointments();
-        appointmentsPresenter.subsribeToCeckForData();
+        appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
     }
 
     @OnClick(R.id.prevDateBtn)
     @Override
     public void onDecDate() {
         changeFilterDate(false);
-        setDateFilter(dateFilter);
+        setInitDate(initDate);
         adapter.clearAppointments();
-        appointmentsPresenter.subsribeToCeckForData();
+        appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
     }
 
     private void changeFilterDate(boolean incDate) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFilter);
         int day = incDate ? 1 : -1;
-        cal.add(Calendar.DATE, day);
-        dateFilter = cal.getTime();
+        initDate.add(Calendar.DATE, day);
     }
 
     @Override
     public void onDateChanged(Appointment appointment) {
-        if (isFilterDate(appointment.getInitDate())) {
-            adapter.addAppointment(appointment);
-        }
+        adapter.addAppointment(appointment);
     }
 
     @Override
@@ -218,7 +216,6 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     @Override
     public void showList() {
         recyclerViewAppointments.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -257,6 +254,27 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         }
     }
 
+    @OnClick(R.id.textViewDate)
+    @Override
+    public void onPickDate() {
+        DatePickerDialog pickerDialog = new DatePickerDialog(this, R.style.AppTheme_Dialog, new
+                DatePickerDialog
+                        .OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int
+                            dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth, 0, 0, 0);
+                        setInitDate(cal);
+                        adapter.clearAppointments();
+                        appointmentsPresenter.subsribeToCeckForData(initDate.getTimeInMillis());
+                    }
+                }, initDate.get(Calendar.YEAR), initDate.get(Calendar.MONTH), initDate.get(Calendar
+                .DAY_OF_MONTH));
+        pickerDialog.setTitle(getString(R.string.appointments_pickdate_title));
+        pickerDialog.show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -265,13 +283,15 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
             if (requestCode == ADD_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                if (isFilterDate(appointment.getInitDate())) {
+                if (appointment.getInitDate().after(initDate.getTime()) &&
+                        appointment.getInitDate().before(util.getEndDate(initDate.getTime()))) {
                     onAppointmentAdded(appointment);
                 }
             } else if (requestCode == MODIFIED_APPOINTMENT) {
                 Appointment appointment = (Appointment) data.getExtras().getSerializable
                         ("appointment");
-                if (isFilterDate(appointment.getInitDate())) {
+                if (appointment.getInitDate().after(initDate.getTime()) &&
+                        appointment.getInitDate().before(util.getEndDate(initDate.getTime()))) {
                     onAppointmentChanged(appointment);
                 }
             }
@@ -279,15 +299,4 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         }
     }
 
-    private boolean isFilterDate(Date initDate) {
-        Date endDate = getEndDate();
-        return initDate.after(dateFilter) && initDate.before(endDate);
-    }
-
-    private Date getEndDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFilter);
-        cal.add(Calendar.DATE, 1);
-        return cal.getTime();
-    }
 }

@@ -1,16 +1,20 @@
 package com.adrian.android.clinicappointments.appointments.ui.adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adrian.android.clinicappointments.R;
 import com.adrian.android.clinicappointments.domain.Util;
 import com.adrian.android.clinicappointments.entities.Appointment;
+import com.adrian.android.clinicappointments.libs.base.ImageLoader;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,14 +30,17 @@ import butterknife.ButterKnife;
  */
 public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapter.ViewHolder> {
 
+    Util util;
+    List<Appointment> appointments;
+    ImageLoader imageLoader;
+    OnItemClickListener onItemClickListener;
 
-    private Util util;
-    private List<Appointment> appointments;
-    private OnItemClickListener onItemClickListener;
 
-    public AppointmentsAdapter(Util util, List<Appointment> appointments, OnItemClickListener
-            onItemClickListener) {
+    public AppointmentsAdapter(Util util, List<Appointment> appointments, ImageLoader
+            imageLoader, OnItemClickListener
+                                       onItemClickListener) {
         this.util = util;
+        this.imageLoader = imageLoader;
         this.appointments = appointments;
         this.onItemClickListener = onItemClickListener;
     }
@@ -42,12 +49,15 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .content_appointment, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        hideAddress(holder);
+        hideMap(holder);
+        hideMapProgress(holder);
+
         Appointment appointment = appointments.get(position);
 
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -56,17 +66,36 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         holder.txtPatient.setText(appointment.getPatient().getPatient());
 
         if (appointment.getLatitude() != null && appointment.getLongitude() != null) {
+            showMapProgress(holder);
             String address = util.getFromLocation(Double.parseDouble(appointment.getLatitude()),
                     Double.parseDouble
                             (appointment.getLongitude()));
             holder.txtAddress.setText(address);
+            String url = util.getStaticMapURL(address);
+            imageLoader.load(holder.staticMapImg, url);
+            hideMapProgress(holder);
             showAddress(holder);
-        } else {
-            hideAddress(holder);
+            showMap(holder);
         }
-
         holder.setOnItemClickListener(appointment, this.onItemClickListener);
 
+    }
+
+    private void hideMapProgress(ViewHolder holder) {
+        holder.mapProgress.setVisibility(View.GONE);
+
+    }
+
+    private void showMapProgress(ViewHolder holder) {
+        holder.mapProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void hideMap(ViewHolder holder) {
+        holder.cardViewMap.setVisibility(View.GONE);
+    }
+
+    private void showMap(ViewHolder holder) {
+        holder.cardViewMap.setVisibility(View.VISIBLE);
     }
 
     private void hideAddress(ViewHolder holder) {
@@ -85,8 +114,8 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
     public void addAppointment(Appointment appointment) {
         if (getAppointmentById(appointment.getId()) == null) {
-            appointments.add(0, appointment);
-            sortAppointmentsByDate();
+            appointments.add(appointment);
+//            sortAppointmentsByDate();
             notifyDataSetChanged();
         }
     }
@@ -148,6 +177,12 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
         LinearLayout layoutButtons;
         @Bind(R.id.txtAddress)
         TextView txtAddress;
+        @Bind(R.id.staticMapImg)
+        ImageView staticMapImg;
+        @Bind(R.id.cardViewMap)
+        CardView cardViewMap;
+        @Bind(R.id.mapProgress)
+        ProgressBar mapProgress;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -171,6 +206,13 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
             });
 
             txtAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPlaceClick(appointment);
+                }
+            });
+
+            staticMapImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onPlaceClick(appointment);

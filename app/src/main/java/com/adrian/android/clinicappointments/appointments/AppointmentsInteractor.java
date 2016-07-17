@@ -2,17 +2,17 @@ package com.adrian.android.clinicappointments.appointments;
 
 import com.adrian.android.clinicappointments.entities.Appointment;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by adrian on 6/07/16.
  */
 public interface AppointmentsInteractor {
-    void subscribe(Date date);
+    void subscribe(Calendar date);
 
     void unsubscribe();
 
-    void subscribeToCheckForData();
+    void subscribeToCheckForData(Long initDate);
 
     void destroyListener();
 

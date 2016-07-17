@@ -22,8 +22,10 @@ public class FirebaseAPI {
     private Firebase firebase;
     private ChildEventListener appointmentEventListener;
     private ValueEventListener valueEventListener;
+    private Util util;
 
-    public FirebaseAPI(Firebase firebase) {
+    public FirebaseAPI(Firebase firebase, Util util) {
+        this.util = util;
         this.firebase = firebase;
     }
 
@@ -33,7 +35,7 @@ public class FirebaseAPI {
      *
      * @param listener Interface to wrap the events of Firebase.
      */
-    public void checkForData(final FirebaseFilterListenerCallback listener) {
+    public void checkForData(Long initDate, final FirebaseFilterListenerCallback listener) {
         if (valueEventListener == null) {
             valueEventListener = new ValueEventListener() {
                 @Override
@@ -50,7 +52,11 @@ public class FirebaseAPI {
                 }
             };
         }
-        getAppointmentsReference().addValueEventListener(valueEventListener);
+//        getAppointmentsReference().addValueEventListener(valueEventListener);
+        Long endDate = util.dateToTimeInMillis(util.getEndDate(initDate));
+        getAppointmentsReference().orderByChild("initDate").startAt(initDate).endAt(endDate)
+                .addValueEventListener
+                        (valueEventListener);
     }
 
 

@@ -24,9 +24,9 @@ import com.firebase.client.Firebase;
  */
 public class ClinicAppointmentsApp extends Application {
     public final static String EMAIL_KEY = "email";
-    private LibsModule libsModule;
-    private DomainModule domainModule;
-    private ClinicAppointmentsAppModule clinicAppointmentsAppModule;
+    LibsModule libsModule;
+    DomainModule domainModule;
+    ClinicAppointmentsAppModule clinicAppointmentsAppModule;
 
     @Override
     public void onCreate() {
@@ -36,7 +36,7 @@ public class ClinicAppointmentsApp extends Application {
     }
 
     private void initModules() {
-        libsModule = new LibsModule();
+        libsModule = new LibsModule(this);
         domainModule = new DomainModule();
         clinicAppointmentsAppModule = new ClinicAppointmentsAppModule(this);
     }
@@ -56,8 +56,9 @@ public class ClinicAppointmentsApp extends Application {
 
     }
 
-    public AppointmentsComponet getAppointmentComponent(AppointmentsView view,
-                                                        OnItemClickListener onItemClickListener) {
+    public AppointmentsComponet getAppointmentComponent(
+            AppointmentsView view,
+            OnItemClickListener onItemClickListener) {
         return DaggerAppointmentsComponet
                 .builder()
                 .clinicAppointmentsAppModule(clinicAppointmentsAppModule)
@@ -65,7 +66,6 @@ public class ClinicAppointmentsApp extends Application {
                 .libsModule(libsModule)
                 .appointmentsModule(new AppointmentsModule(view, onItemClickListener))
                 .build();
-
     }
 
     public AddAppointmentComponent getAddAppointmentComponent(AddAppointmentView view) {

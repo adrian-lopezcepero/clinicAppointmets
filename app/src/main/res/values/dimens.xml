@@ -11,4 +11,10 @@
     <dimen name="address_font_size">10dp</dimen>
     <dimen name="appointment_container_map_width">100dp</dimen>
     <dimen name="appointment_container_map_height">100dp</dimen>
+    <dimen name="static_maps_width">100dp</dimen>
+    <dimen name="static_maps_height">100dp</dimen>
+    <dimen name="appointments_item_margin">8dp</dimen>
+    <dimen name="buttons_Padding">2dp</dimen>
+    <dimen name="logoTextSize">20dp</dimen>
+    <dimen name="logoWidth">80dp</dimen>
 </resources>
